@@ -7,6 +7,7 @@
  */
 
 module.exports = {
+    lintOnSave: false,
     configureWebpack: {
         resolve: {
             alias: {
@@ -14,14 +15,15 @@ module.exports = {
                 'commonjs': '@/commonJs',
                 'network': '@/network',
                 'components': '@/components',
-                'views': '@/views'
+                'views': '@/views',
+                'js': '@/js'
             }
         }
     },
     devServer: {
         open: true, //是否自动弹出浏览器页面
         host: "localhost",
-        port: '8080',
+        port: '8081',
         https: false,   //是否使用https协议
         hotOnly: true, //是否开启热更新
     }

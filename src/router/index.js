@@ -9,9 +9,7 @@ import Router from 'vue-router'
  */
 
 Vue.use(Router);
-/**
- *
- */
+
 // 导入其它路由文件
 // import homeRouter from './homeRouter';
 
