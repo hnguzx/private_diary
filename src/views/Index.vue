@@ -16,20 +16,47 @@
         </el-header>
 
         <el-main>
-            <el-input v-validate="'required'" name="required" placeholder="请输入用户昵称" v-model="userName" clearable></el-input>
-            <el-date-picker placeholder="请选择出生日期" v-model="birthDay" type="date"></el-date-picker>
-            <el-radio-group v-model="sex">
-                <el-radio label="1">男</el-radio>
-                <el-radio label="0">女</el-radio>
-            </el-radio-group>
+            <ValidationObserver v-slot="{register }">
+                <el-form :label-position="labelPosition" label-width="80px">
+                    <el-form-item label="测试校验">
+                        <ValidationProvider name="email" rules="email" v-slot="{errors}">
+                            <input v-model="email" type="text"/>
+                            <span>{{ errors[0] }}</span>
+                        </ValidationProvider>
+                    </el-form-item>
+                    <ValidationProvider name="用户昵称" rules="required" v-slot="{errors}">
+                        <el-form-item label="昵称">
+                            <el-input placeholder="请输入用户昵称" v-model="userName" clearable></el-input>
+                            <span>{{ errors[0] }}</span>
+                        </el-form-item>
+                    </ValidationProvider>
 
-            <el-input v-validate="'required|email'" placeholder="请输入邮箱地址或手机号" v-model="emailOrPhone" clearable>
-                <el-button slot="append" @click="getVerifyCode">获取验证码</el-button>
-            </el-input>
-            <el-input v-validate="'required|port'" placeholder="请输入验证码" v-model="verifyCode"></el-input>
-            <el-input placeholder="请输入密码" v-model="password" show-password></el-input>
+                    <el-form-item label="出生日期">
+                        <el-date-picker placeholder="请选择出生日期" v-model="birthDay" type="date"></el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="性别">
+                        <el-radio-group v-model="sex">
+                            <el-radio label="1">男</el-radio>
+                            <el-radio label="0">女</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                    <el-form-item label="邮箱/手机">
+                        <el-input placeholder="邮箱或手机号" v-model="emailOrPhone" clearable>
+                            <el-button slot="append" @click="getVerifyCode">获取验证码</el-button>
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item label="验证码">
+                        <el-input placeholder="请输入验证码" v-model="verifyCode"></el-input>
+                    </el-form-item>
+                    <el-form-item label="密码">
+                        <el-input placeholder="请输入密码" v-model="password" show-password></el-input>
+                    </el-form-item>
+                </el-form>
 
-            <span class="validate-error" v-if="errors.has('httpPort')"> {{ errors.items[0].msg }} </span>
+
+            </ValidationObserver>
+
+
             <el-row>
                 <el-button type="primary" @click="register">注册</el-button>
             </el-row>
@@ -40,13 +67,11 @@
 </template>
 
 <script>
-    import {getVerifyCode, register} from "js/index";
-    import {isEmail, isPhone, stringIsNull} from "../commonJs/tool";
-    import Validator from "../validator/validator";
+    import {getVerifyCode, register} from "js/index"
+    import '../validator/validator'
 
     export default {
         name: "Index",
-        components: {Validator},
         data() {
             return {
                 userName: '',
@@ -62,24 +87,17 @@
         methods: {
             getVerifyCode: function () {
                 console.log("获取验证码！" + this.emailOrPhone);
-                let params = {
-                    email: this.emailOrPhone
-                }
-                getVerifyCode(params).then(data => {
-                    console.log(data)
-                }).catch(err => {
-                    console.log(err)
-                })
+                getVerifyCode(params)
+                //     .then(data => {
+                //     console.log(data)
+                // }).catch(err => {
+                //     console.log(err)
+                // })
             },
             register() {
                 console.log("进行注册！")
-                this.$validator.validate().then(result=>{
-                    if (!result){
-                        this.$message.warning(this.errors.all()[0])
-                        return
-                    }
-                })
-                register().then(data => {
+                register()
+                    .then(data => {
                     console.log(data)
                 }).catch(err => {
                     console.log(err)
@@ -93,7 +111,5 @@
 </script>
 
 <style scoped>
-    .validate-error{
-        color: red;
-    }
+
 </style>

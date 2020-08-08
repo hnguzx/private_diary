@@ -12,13 +12,11 @@ import 'element-ui/lib/theme-chalk/index.css'
 import zhLocale from "element-ui/lib/locale/lang/zh-CN";
 import router from "./router"
 import './mockJs/mockServer'
-import './validator/validator'
 
 import App from './App.vue'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI, {zhLocale})
-
 
 
 new Vue({
