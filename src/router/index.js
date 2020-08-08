@@ -11,15 +11,20 @@ import Router from 'vue-router'
 Vue.use(Router);
 
 // 导入其它路由文件
-// import homeRouter from './homeRouter';
+import userRouter from './user'
+import homeRouter from './home'
 
-const Index = () => import('views/Index');
+const Login = () => import('views/Login');
+
 
 const routes = [
     {
         path: '/',
-        component: Index
-    }
+        name: '/',
+        component: Login
+    },
+    ...userRouter,
+    ...homeRouter
 ];
 
 const router = new Router({

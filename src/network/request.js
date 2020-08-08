@@ -13,7 +13,9 @@ export function ajaxRequest(config) {
     });
     // request拦截
     axiosExample.interceptors.request.use(config => {
-        // config.data = config
+        if (config.method.toLowerCase() != 'get') {
+            console.log(config.data)
+        }
         return config
     }, error => {
         console.log(error)

@@ -13,10 +13,11 @@ module.exports = {
             alias: {
                 'assets': '@/assets',
                 'commonjs': '@/commonJs',
-                'network': '@/network',
                 'components': '@/components',
-                'views': '@/views',
-                'js': '@/js'
+                'js': '@/js',
+                'network': '@/network',
+                'validator': '@/validator',
+                'views': '@/views'
             }
         }
     },
