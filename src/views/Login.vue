@@ -26,7 +26,9 @@
                         <span class="error-msg ">{{errors[0]}}</span>
                     </ValidationProvider>
                     <el-row>
-                        <el-link @click.native="forgetPassword" class="forget_password" type="primary" :underline="false" href="javascript:void(0);">忘记密码</el-link>
+                        <el-link @click.native="forgetPassword" class="forget_password" type="primary"
+                                 :underline="false" href="javascript:void(0);">忘记密码
+                        </el-link>
                     </el-row>
                     <el-row class="login_button">
                         <el-button type="primary" @click="login">登录</el-button>
@@ -40,6 +42,7 @@
 <script>
     import 'validator/validator'
     import {login} from "js/login/login";
+    import {isEmail} from "commonjs/tool";
 
     export default {
         name: "Login",
@@ -52,11 +55,10 @@
             }
         },
         methods: {
-            changeView() {
-                this.$router.push({
-                    name: '/register'
-                })
-            },
+
+            /**
+             * 登录
+             */
             login() {
                 this.$refs.form.validate().then(success => {
                     if (!success) {
@@ -67,23 +69,46 @@
                         })
                         return
                     }
+                    this.isEmailOrPhone()
                     let params = {
                         email: this.email,
                         phone: this.phone,
                         password: this.password
                     }
                     login(params).then(data => {
-                        console.log(data)
                         this.$router.push('/home')
                     }).catch(err => {
-                        console.log(err)
                     })
                 })
             },
+
+            /**
+             * 忘记密码
+             */
             forgetPassword() {
                 this.$router.push({
                     name: '/forgetPassword'
                 })
+            },
+
+            /**
+             * 切换页面
+             */
+            changeView() {
+                this.$router.push({
+                    name: '/register'
+                })
+            },
+
+            /**
+             * 判断输入的是手机号还是邮箱地址
+             */
+            isEmailOrPhone() {
+                if (isEmail(this.emailOrPhone)) {
+                    this.email = this.emailOrPhone
+                } else {
+                    this.phone = this.emailOrPhone
+                }
             }
         },
         mounted() {

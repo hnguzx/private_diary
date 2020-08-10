@@ -1,5 +1,12 @@
 <template>
     <el-container>
+        <el-header style="text-align: center">
+            <el-row :gutter="50" style="line-height: 60px;">
+                <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1" :offset="16">
+                    <el-tag @click="changeView" type="" effect="dark">登录</el-tag>
+                </el-col>
+            </el-row>
+        </el-header>
         <el-main>
             <ValidationObserver ref="form">
 
@@ -8,14 +15,16 @@
                     <ValidationProvider name="邮箱/手机" rules="required|emailOrPhone" ref="emailOrPhone">
                         <el-form-item label="邮箱/手机">
                             <el-input placeholder="邮箱或手机号" v-model="emailOrPhone" clearable>
-                                <el-button slot="append" @click="getVerifyCode">获取验证码</el-button>
+                                <el-button :disabled="this.forbiddenButtonTime>0" slot="append"
+                                           @click="getVerifyCode">{{buttonText}}
+                                </el-button>
                             </el-input>
                         </el-form-item>
                     </ValidationProvider>
 
-                    <ValidationProvider name="验证码" rules="required">
+                    <ValidationProvider name="验证码" rules="required" v-slot="{errors}">
                         <el-form-item label="验证码">
-                            <el-input placeholder="请输入验证码" v-model="verifyCode" clearable></el-input>
+                            <el-input placeholder="请输入验证码" v-model="verifyCode" maxlength="6" clearable></el-input>
                         </el-form-item>
                     </ValidationProvider>
 
@@ -43,7 +52,7 @@
 </template>
 
 <script>
-    import {stringIsNull, isEmail} from "commonjs/tool";
+    import { isEmail} from "commonjs/tool";
     import {getVerifyCode, updatePassword} from "js/user/user"
 
     export default {
@@ -55,7 +64,9 @@
                 phone: '',
                 verifyCode: '',
                 password: '',
-                newPassword: ''
+                newPassword: '',
+                buttonText: '获取验证码',
+                forbiddenButtonTime: 0
             }
         },
         methods: {
@@ -72,16 +83,38 @@
                         })
                         return;
                     }
+
                     let params = {
-                        emailOrPhone: this.emailOrPhone
+                        email: this.email,
+                        phone: this.phone,
+                        password: this.password
                     };
                     getVerifyCode(params).then(data => {
-                        console.log(data)
+                        this.$message({
+                            showClose: false,
+                            message: '验证码发送成功!',
+                            type: "success"
+                        });
+                        this.forbiddenButtonTime = 60
+                        this.buttonText = this.forbiddenButtonTime + '秒后重新获取'
+                        this.timer = setInterval(this.preventReSub, 1000)
                     }).catch(err => {
-                        console.log(err)
                     })
                 });
 
+            },
+
+            /**
+             * 防止重复提交
+             */
+            preventReSub() {
+                if (this.forbiddenButtonTime > 0) {
+                    this.forbiddenButtonTime--
+                    this.buttonText = this.forbiddenButtonTime + '秒后重新获取'
+                    return
+                }
+                clearInterval(this.timer);
+                this.buttonText = '获取验证码'
             },
 
             /**
@@ -113,10 +146,8 @@
                         password: this.password
                     }
                     updatePassword(params).then(data => {
-                        console.log(data)
                         this.changeView()
                     }).catch(err => {
-                        console.log(err)
                     })
                 })
 
@@ -131,6 +162,16 @@
                         emailOrPhone: this.emailOrPhone
                     }
                 })
+            },
+            /**
+             * 判断输入的是手机号还是邮箱地址
+             */
+            isEmailOrPhone() {
+                if (isEmail(this.emailOrPhone)) {
+                    this.email = this.emailOrPhone
+                } else {
+                    this.phone = this.emailOrPhone
+                }
             }
         }
     }

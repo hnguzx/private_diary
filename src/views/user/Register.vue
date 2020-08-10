@@ -45,14 +45,16 @@
                     <ValidationProvider name="邮箱/手机" rules="required|emailOrPhone" ref="emailOrPhone">
                         <el-form-item label="邮箱/手机">
                             <el-input placeholder="邮箱或手机号" v-model="emailOrPhone" clearable>
-                                <el-button id="getVerifyCode" slot="append" @click="getVerifyCode">获取验证码</el-button>
+                                <el-button id="getVerifyCode" slot="append" :disabled="forbiddenButtonTime>0"
+                                           @click="getVerifyCode">{{buttonText}}
+                                </el-button>
                             </el-input>
                         </el-form-item>
                     </ValidationProvider>
 
                     <ValidationProvider name="验证码" rules="required">
                         <el-form-item label="验证码">
-                            <el-input placeholder="请输入验证码" v-model="verifyCode" clearable></el-input>
+                            <el-input placeholder="请输入验证码" v-model="verifyCode" maxlength="6" clearable></el-input>
                         </el-form-item>
                     </ValidationProvider>
                     <ValidationProvider name="密码" rules="required|alpha_dash|min:8|max:20" v-slot="{errors}">
@@ -88,7 +90,9 @@
                 verifyCode: '123123',
                 birthDay: '2020-02-03',
                 sex: '1',
-                forbiddenButtonTime: 0
+                buttonText: '获取验证码',
+                forbiddenButtonTime: 0,
+                timer: null
             }
         },
         methods: {
@@ -105,8 +109,10 @@
                         })
                         return;
                     }
+                    this.isEmailOrPhone()
                     let params = {
-                        emailOrPhone: this.emailOrPhone
+                        email: this.email,
+                        phone:this.phone
                     };
                     getVerifyCode(params).then(data => {
                         this.$message({
@@ -115,31 +121,12 @@
                             type: "success"
                         });
                         this.forbiddenButtonTime = 60
-                        console.log(data)
+                        this.buttonText = this.forbiddenButtonTime + '秒后重新获取'
+                        this.timer = setInterval(this.preventReSub, 1000)
                     }).catch(err => {
-                        console.log(err)
                     })
                 });
             },
-
-            /**
-             * 防止重复提交
-             */
-            chongfutijiao() {
-                if (this.forbiddenButtonTime > 0) {
-                    this.$message({
-                        showClose: false,
-                        message: '系统已发送验证码！请稍后再试！',
-                        type: "success"
-                    });
-                    return
-                }
-                if (this.forbiddenButtonTime == 0) {
-                    clearInterval(interval)
-                }
-                let interval = setInterval(this.chongfutijiao, 1000);
-            },
-
 
             /**
              * 注册
@@ -154,11 +141,7 @@
                         })
                         return
                     }
-                    if (isEmail(this.emailOrPhone)) {
-                        this.email = this.emailOrPhone
-                    } else {
-                        this.phone = this.emailOrPhone
-                    }
+                    this.isEmailOrPhone()
                     let params = {
                         userName: this.userName,
                         birthDay: this.birthDay,
@@ -169,10 +152,8 @@
                         password: this.password
                     }
                     register(params).then(data => {
-                        console.log(data)
                         this.changeView()
                     }).catch(err => {
-                        console.log(err)
                     })
                 });
 
@@ -188,6 +169,30 @@
                         emailOrPhone: this.emailOrPhone
                     }
                 })
+            },
+
+            /**
+             * 防止重复提交
+             */
+            preventReSub() {
+                if (this.forbiddenButtonTime > 0) {
+                    this.forbiddenButtonTime--
+                    this.buttonText = this.forbiddenButtonTime + '秒后重新获取'
+                    return
+                }
+                clearInterval(this.timer);
+                this.buttonText = '获取验证码'
+            },
+
+            /**
+             * 判断输入的是手机号还是邮箱地址
+             */
+            isEmailOrPhone() {
+                if (isEmail(this.emailOrPhone)) {
+                    this.email = this.emailOrPhone
+                } else {
+                    this.phone = this.emailOrPhone
+                }
             }
         }
     }
