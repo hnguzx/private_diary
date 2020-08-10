@@ -52,8 +52,9 @@
 </template>
 
 <script>
-    import { isEmail} from "commonjs/tool";
+    import {isEmail} from "commonjs/tool";
     import {getVerifyCode, updatePassword} from "js/user/user"
+    import md5 from 'js-md5'
 
     export default {
         name: "ForgetPassword",
@@ -139,6 +140,7 @@
                     } else {
                         this.phone = this.emailOrPhone
                     }
+                    this.password = md5(this.password)
                     let params = {
                         email: this.email,
                         phone: this.phone,

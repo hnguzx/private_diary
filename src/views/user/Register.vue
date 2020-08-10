@@ -76,7 +76,8 @@
 <script>
     import {getVerifyCode, register} from "js/user/user"
     import 'validator/validator'
-    import {isEmail} from "commonjs/tool";
+    import {isEmail} from "commonjs/tool"
+    import md5 from 'js-md5'
 
     export default {
         name: "Index",
@@ -142,6 +143,7 @@
                         return
                     }
                     this.isEmailOrPhone()
+                    this.password = md5(this.password)
                     let params = {
                         userName: this.userName,
                         birthDay: this.birthDay,

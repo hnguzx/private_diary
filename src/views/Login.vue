@@ -43,6 +43,7 @@
     import 'validator/validator'
     import {login} from "js/login/login";
     import {isEmail} from "commonjs/tool";
+    import md5 from 'js-md5'
 
     export default {
         name: "Login",
@@ -70,6 +71,7 @@
                         return
                     }
                     this.isEmailOrPhone()
+                    this.password = md5(this.password)
                     let params = {
                         email: this.email,
                         phone: this.phone,
