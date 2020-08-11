@@ -4,7 +4,7 @@
             <div slot="nav-left">
                 <i class="el-icon-arrow-left"></i>
             </div>
-            <div slot="nav-center">首页</div>
+            <div slot="nav-center">广场</div>
             <div slot="nav-right">
                 <i class="el-icon-setting"></i>
             </div>
@@ -16,7 +16,7 @@
     import NavBar from "components/common/navbar/NavBar"
 
     export default {
-        name: "Home",
+        name: "Square",
         components: {
             NavBar
         }

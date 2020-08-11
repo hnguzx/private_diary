@@ -25,13 +25,12 @@
                         </el-form-item>
                         <span class="error-msg ">{{errors[0]}}</span>
                     </ValidationProvider>
-                    <el-row>
+                    <br>
+                    <el-row class="login_button">
+                        <el-button type="primary" @click="login">登录</el-button>
                         <el-link @click.native="forgetPassword" class="forget_password" type="primary"
                                  :underline="false" href="javascript:void(0);">忘记密码
                         </el-link>
-                    </el-row>
-                    <el-row class="login_button">
-                        <el-button type="primary" @click="login">登录</el-button>
                     </el-row>
                 </ValidationObserver>
             </el-form>
@@ -49,8 +48,8 @@
         name: "Login",
         data() {
             return {
-                emailOrPhone: '',
-                password: '',
+                emailOrPhone: 'hnguzx@qq.com',
+                password: '123123123',
                 email: '',
                 phone: ''
             }
@@ -78,7 +77,7 @@
                         password: this.password
                     }
                     login(params).then(data => {
-                        this.$router.push('/home')
+                        this.$router.push('/main')
                     }).catch(err => {
                     })
                 })
@@ -114,7 +113,9 @@
             }
         },
         mounted() {
-            this.emailOrPhone = this.$route.params.emailOrPhone
+            if (this.$route.params.emailOrPhone!==undefined && this.$route.params.emailOrPhone!==''){
+                this.emailOrPhone = this.$route.params.emailOrPhone
+            }
         }
     }
 </script>
@@ -122,5 +123,6 @@
 <style scoped>
     .forget_password {
         float: right;
+        margin-top: 20px;
     }
 </style>
