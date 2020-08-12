@@ -12,7 +12,12 @@ Vue.use(Router);
 
 // 导入其它路由文件
 import userRouter from './user'
-import homeRouter from './home'
+import mainRouter from './main'
+
+const originalPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+    return originalPush.call(this, location).catch(err => err)
+}
 
 const Login = () => import('views/Login');
 
@@ -24,7 +29,8 @@ const routes = [
         component: Login
     },
     ...userRouter,
-    ...homeRouter
+    ...mainRouter
+
 ];
 
 const router = new Router({

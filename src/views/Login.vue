@@ -18,7 +18,7 @@
                         <span class="error-msg ">{{errors[0]}}</span>
                     </ValidationProvider>
 
-                    <ValidationProvider name="密码" rules="required|alpha_dash|min:8|max:20" ref="password"
+                    <ValidationProvider name="密码" rules="required|alpha_dash|min:8" ref="password"
                                         v-slot="{errors}">
                         <el-form-item label="密码">
                             <el-input placeholder="请输入密码" v-model="password" show-password></el-input>
@@ -78,7 +78,6 @@
                     }
                     login(params).then(data => {
                         this.$router.push('/main')
-                    }).catch(err => {
                     })
                 })
             },

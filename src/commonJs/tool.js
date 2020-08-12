@@ -1,3 +1,5 @@
+import da from "element-ui/src/locale/lang/da";
+
 export function stringIsNull(str) {
     if (str == '' || str.trim().length == 0 || str == null) {
         return true
@@ -21,5 +23,21 @@ export function isPhone(str) {
     } else {
         return true;
     }
+}
+
+export function getCurrentDate() {
+    let date = new Date();
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+
+    month = supplyZero(month);
+    day = supplyZero(day);
+    return year + '-' + month + '-' + day;
+}
+
+function supplyZero(date) {
+    date = ('0' + date).substr(-2)
+    return date;
 }
 
