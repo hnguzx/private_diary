@@ -9,9 +9,7 @@ const CompressionPlugin = require("compression-webpack-plugin")
 module.exports = {
     publicPath: './',
     lintOnSave: false,
-    chainWebpack: config => {
-        // 解决ie11兼容es6
-        // config.entry('main').add('babel.polyfill')
+    /*chainWebpack: config => {
         // 开启图片压缩
         config.module.rule('images')
             .test(/\.(png|jpe?g|gif|svg)(\?.*)?$/)
@@ -25,7 +23,7 @@ module.exports = {
                 threshold: 10240, // 对超过10k的数据压缩
                 deleteOriginalAssets: true // 不删除源文件
             }))
-    },
+    },*/
     configureWebpack: {
         resolve: {
             alias: {
