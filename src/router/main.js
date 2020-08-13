@@ -1,8 +1,7 @@
 import homeRouter from "./home";
 import historyRouter from './history'
 import mineRouter from './mine'
-import square from './square'
-const Weather = () => import('views/home/Weather')
+import squareRouter from './square'
 
 const Main = () => import('views/main/Main')
 
@@ -18,12 +17,8 @@ let routes = [
             ...homeRouter,
             ...historyRouter,
             ...mineRouter,
-            ...square
+            ...squareRouter
         ]
-    },
-    {
-        path: '/weather',
-        component: Weather,
     }
 ]
 

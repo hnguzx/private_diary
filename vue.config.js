@@ -5,7 +5,7 @@
  * @Last Modified by:   guzx
  * @Last Modified time: 2020-03-16 13:07:20
  */
-const CompressionPlugin = require("compression-webpack-plugin")
+// const CompressionPlugin = require("compression-webpack-plugin")
 module.exports = {
     publicPath: './',
     lintOnSave: false,
@@ -35,6 +35,9 @@ module.exports = {
                 'validator': '@/validator',
                 'views': '@/views'
             }
+        },
+        externals:{
+            'AMap': 'AMap' // 高德地图配置
         }
     },
     devServer: {

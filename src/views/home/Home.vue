@@ -19,13 +19,27 @@
                         <span></span>
                         <div>
                             <time>{{currentDate}}</time>
-                            <el-button style="float: right" @click="next" type="primary">记录今日</el-button>
+                            <el-button style="float: right" @click="table =true" type="primary">记录今日</el-button>
                         </div>
                     </el-card>
                 </el-col>
             </el-row>
         </el-main>
-        <!--        <router-view></router-view>-->
+
+        <el-drawer
+                :visible.sync="table"
+                direction="rtl"
+                size="100%"
+                :show-close="true"
+                :with-header="false"
+                ref="drawer">
+            <div>
+                <keep-alive>
+                    <router-view></router-view>
+                </keep-alive>
+            </div>
+        </el-drawer>
+
     </el-container>
 </template>
 
@@ -40,18 +54,28 @@
         },
         data() {
             return {
-                currentDate: getCurrentDate()
+                currentDate: getCurrentDate(),
+                table: false,
+                dialog: false,
+                weatherList: ['SUNNY', 'CLOUDY', 'RAINY', 'SNOWY'],
+                weather: '',
             }
         },
         methods: {
-            next() {
-                console.log("进入下一个页面")
-                this.$router.push('/weather')
+            closeDra() {
+                this.$refs.drawer.closeDrawer()
+            },
+            weatherChange() {
+                console.log('当前选择的天气是：' + this.weather)
             }
         }
     }
 </script>
 
 <style scoped>
-
+    .weather_icon {
+        width: 50px;
+        height: 50px;
+        display: inline;
+    }
 </style>
