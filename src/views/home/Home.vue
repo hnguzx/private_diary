@@ -34,9 +34,9 @@
                 :with-header="false"
                 ref="drawer">
             <div>
-                <keep-alive>
-                    <router-view></router-view>
-                </keep-alive>
+                <!--                <keep-alive>-->
+                <router-view></router-view>
+                <!--                </keep-alive>-->
             </div>
         </el-drawer>
 
@@ -68,6 +68,9 @@
             weatherChange() {
                 console.log('当前选择的天气是：' + this.weather)
             }
+        },
+        mounted() {
+            console.log(this.$store.getters.userInfo)
         }
     }
 </script>

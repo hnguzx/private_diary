@@ -26,22 +26,23 @@
 <script>
     export default {
         name: "Mood",
-        data(){
-            return{
-                mood:[]
+        data() {
+            return {
+                mood: [],
+                weather: ''
             }
         },
-        methods:{
-            next(){
+        methods: {
+            next() {
                 this.$router.to('/event')
             },
-            pre(){
+            pre() {
                 this.$router.back()
             }
 
         },
         mounted() {
-            console.log(this.$route.query.weather)
+            console.log('当前天气是：' + this.$root.$data.sharedState.diaryContent.weather)
         }
     }
 </script>

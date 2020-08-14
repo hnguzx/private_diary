@@ -12,14 +12,23 @@ import 'element-ui/lib/theme-chalk/index.css'
 import zhLocale from "element-ui/lib/locale/lang/zh-CN";
 import router from "./router"
 import './mockJs/mockServer'
+import VueTouch from 'vue-touch'
+import vueStore from "./store"
+import store from "./vuex"
 
 import App from './App.vue'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI, {zhLocale})
+Vue.use(VueTouch)
 
 
 new Vue({
     render: h => h(App),
-    router
+    router,
+    store,
+    data: {
+        privateState: {},
+        sharedState: vueStore.state
+    }
 }).$mount('#app')

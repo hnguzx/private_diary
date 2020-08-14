@@ -77,6 +77,10 @@
                         password: this.password
                     }
                     login(params).then(data => {
+                        this.$store.commit({
+                            type: 'updateUserInfo',
+                            data:data.obj
+                        })
                         this.$router.push('/main')
                     })
                 })
@@ -112,7 +116,7 @@
             }
         },
         mounted() {
-            if (this.$route.params.emailOrPhone!==undefined && this.$route.params.emailOrPhone!==''){
+            if (this.$route.params.emailOrPhone !== undefined && this.$route.params.emailOrPhone !== '') {
                 this.emailOrPhone = this.$route.params.emailOrPhone
             }
         }
