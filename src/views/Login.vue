@@ -79,7 +79,7 @@
                     login(params).then(data => {
                         this.$store.commit({
                             type: 'updateUserInfo',
-                            data:data.obj
+                            data: data.obj
                         })
                         this.$router.push('/main')
                     })

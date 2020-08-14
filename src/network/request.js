@@ -25,7 +25,9 @@ export function ajaxRequest(config) {
     // response拦截
     axiosExample.interceptors.response.use(res => {
         console.log(res.data.data)
-        return res.data.data
+        // if (res.data.data.code == '200'){
+            return res.data.data
+        // }
     }, error => {
         return error;
     });

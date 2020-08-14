@@ -1,31 +1,29 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import mutations from "./mutations"
+import actions from "./actions"
+import getters from "./getters";
+
 Vue.use(Vuex)
 
+const state = {
+    userInfo: {
+        userId: '',
+        userName: '',
+        userBirthday: '',
+        userSex: '',
+        userPhone: '',
+        userEmail: '',
+        userHead: ''
+    }
+};
+
 const store = new Vuex.Store({
-    state: {
-        userInfo: {
-            userId: '',
-            userName: '',
-            userBirthday: '',
-            userSex: '',
-            userPhone: '',
-            userEmail: '',
-            userHead: ''
-        }
-    },
-    mutations: {
-        updateUserInfo(state, payload) {
-            state.userInfo = payload.data
-        }
-    },
-    getters: {
-        userInfo(state) {
-            return state.userInfo
-        }
-    },
-    actions: {},
+    state,
+    mutations,
+    getters,
+    actions,
     modules: {}
 })
 
