@@ -7,7 +7,6 @@
                 <span>选择心情</span>
             </el-header>
             <el-main class="el_main">
-
                 <el-carousel ref="carousel" :autoplay="false" :loop="false" height="170px" indicator-position="outside"
                              arrow="never">
                     <el-carousel-item v-for="(moodTow,i) in moodList" :key="i">
@@ -36,7 +35,7 @@
 </template>
 
 <script>
-    import {getValue} from "commonjs/tool";
+    import {getValue} from "commonjs/tool"
 
     export default {
         name: "Mood",
