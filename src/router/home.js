@@ -25,7 +25,8 @@ let routes = [
                 component: Mood,
             },
             {
-                path: 'event',
+                path: '/event',
+                name: '/event',
                 component: Event,
             },
             {

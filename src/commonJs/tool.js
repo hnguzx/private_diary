@@ -1,4 +1,4 @@
-import da from "element-ui/src/locale/lang/da";
+import dataDict from "assets/dataDict";
 
 export function stringIsNull(str) {
     if (str == '' || str.trim().length == 0 || str == null) {
@@ -41,3 +41,7 @@ function supplyZero(date) {
     return date;
 }
 
+export function getValue(key1, key2) {
+    let value = dataDict[key1][key2]
+    return value
+}

@@ -2,7 +2,9 @@ var vueStore = {
     debug: true,
     state: {
         diaryContent: {
-            weather: 'CLOUDY'
+            weather: '',
+            mood: '',
+            event: ''
         }
 
     }

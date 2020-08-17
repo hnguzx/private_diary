@@ -6,18 +6,10 @@
                 <el-button @click="pre">返回</el-button>
                 <span>选择事件</span>
             </el-header>
-            <el-main style="text-align: center">
-
-                <el-checkbox-group v-model="mood">
-                    <!--<el-checkbox-button v-for="(item,i) in weather" :label="i" :key="i">
-                        <img class="weather_icon" :src="'~assets/img/weather/' +item+'.svg'"/>
-                    </el-checkbox-button>-->
-                </el-checkbox-group>
-
+            <el-main>
                 <el-row>
                     <el-button type="primary" @click="next">下一步</el-button>
                 </el-row>
-
             </el-main>
         </el-container>
     </keep-alive>
@@ -26,19 +18,23 @@
 <script>
     export default {
         name: "Event",
-        data(){
-            return{
-                mood:[]
+        data() {
+            return {
+                mood: []
             }
         },
-        methods:{
-            next(){
+        methods: {
+            next() {
                 this.$router.push('/diary')
             },
-            pre(){
-                this.$router.push('/mood')
+            pre() {
+                this.$router.back()
             }
 
+        },
+        mounted() {
+            console.log('当前天气是：' + this.$root.$data.sharedState.diaryContent.weather)
+            console.log('当前心情是：' + this.$root.$data.sharedState.diaryContent.mood)
         }
     }
 </script>
