@@ -72,7 +72,7 @@
             },
             moodChange() {
                 console.log('当前选择的事件是：' + this.event)
-                this.$root.$data.sharedState.diaryContent.mood = this.mood
+                this.$root.$data.sharedState.diaryContent.event = this.event
             },
             left() {
                 this.$refs.carousel.next()

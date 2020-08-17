@@ -44,3 +44,6 @@ Mock.mock(RegExp('/user/updateUser'), 'post', apiResponse(200, 'success', {
     userPhone: /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/,
     userEmail: /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/
 }))
+
+Mock.mock(RegExp('/user/uploadImg'), 'post', apiResponse(200, 'success', null))
+

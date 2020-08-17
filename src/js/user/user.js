@@ -23,3 +23,13 @@ export function updatePassword(params) {
         data: params
     })
 }
+
+export function saveDiary(params) {
+    return ajaxRequest({
+        url: '/diary/insertDiary',
+        method: 'post',
+        data: params,
+        contentType: false,
+        processData: false
+    })
+}
