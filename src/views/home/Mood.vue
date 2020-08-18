@@ -1,12 +1,17 @@
 <template>
 
-    <keep-alive>
-        <el-container>
-            <el-header>
-                <el-button @click="pre">返回</el-button>
-                <span>选择心情</span>
-            </el-header>
-            <el-main class="el_main">
+
+    <el-container>
+        <el-header>
+            <el-page-header @back="pre" title=""></el-page-header>
+        </el-header>
+
+        <el-header>
+            <el-button @click="pre">返回</el-button>
+            <span>选择心情</span>
+        </el-header>
+        <el-main class="el_main">
+            <keep-alive>
                 <el-carousel ref="carousel" :autoplay="false" :loop="false" height="170px" indicator-position="outside"
                              arrow="never">
                     <el-carousel-item v-for="(moodTow,i) in moodList" :key="i">
@@ -24,14 +29,14 @@
                         </v-touch>
                     </el-carousel-item>
                 </el-carousel>
+            </keep-alive>
 
-                <el-row>
-                    <el-button type="primary" @click="next">下一步</el-button>
-                </el-row>
+            <el-row>
+                <el-button type="primary" :disabled="mood===''" @click="next">下一步</el-button>
+            </el-row>
 
-            </el-main>
-        </el-container>
-    </keep-alive>
+        </el-main>
+    </el-container>
 </template>
 
 <script>
@@ -70,7 +75,6 @@
                 this.$router.back()
             },
             moodChange() {
-                console.log('当前选择的心情是：' + this.mood)
                 this.$root.$data.sharedState.diaryContent.mood = this.mood
             },
             left() {
@@ -82,7 +86,10 @@
 
         },
         mounted() {
-            console.log('当前天气是：' + this.$root.$data.sharedState.diaryContent.weather)
+            this.mood = this.$root.$data.sharedState.diaryContent.mood
+        },
+        created() {
+            console.log('create...')
         }
     }
 </script>

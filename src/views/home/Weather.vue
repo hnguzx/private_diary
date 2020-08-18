@@ -1,8 +1,7 @@
 <template>
     <el-container v-loading="loading">
         <el-header>
-            <el-button @click="pre">返回</el-button>
-            <span>选择天气</span>
+            <el-page-header @back="pre" title=""></el-page-header>
         </el-header>
         <el-main class="el_main">
 
@@ -16,7 +15,7 @@
                                 <el-col :span="8" v-for="(weatherImg,i) in weatherThree">
                                     <el-radio-button :label="weatherImg" :key="i">
                                         <img class="weather_icon"
-                                             :src="require('../../assets/img/weather/'+weatherImg+'.svg')"/>
+                                             :src="require('assets/img/weather/'+weatherImg+'.svg')"/>
                                     </el-radio-button>
                                 </el-col>
                             </el-row>
@@ -25,7 +24,7 @@
                 </el-carousel-item>
             </el-carousel>
             <el-row>
-                <el-button type="primary" @click="next">下一步</el-button>
+                <el-button type="primary" :disabled="weather===''" @click="next">下一步</el-button>
             </el-row>
         </el-main>
     </el-container>
@@ -73,7 +72,6 @@
                 this.$parent.closeDrawer()
             },
             weatherChange() {
-                console.log('当前选择的天气是：' + this.weather)
                 this.$root.$data.sharedState.diaryContent.weather = this.weather
             },
             left() {
@@ -84,7 +82,6 @@
             }
         },
         created() {
-            console.log('create...')
             /*this.loading = true;
             setTimeout(() => {
                 this.loading = false;

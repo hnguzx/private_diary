@@ -4,7 +4,7 @@
             <el-button @click="pre">返回</el-button>
             <span>正式编写日记</span>
         </el-header>
-        <el-main>
+        <el-main class="el_main">
             <el-upload
                     ref="detailPhoto"
                     name="detailPhoto"
@@ -16,15 +16,15 @@
                 <img v-if="imageUrl" :src="imageUrl" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
-<!--            <input id="detailPhoto" type="file" name="detailPhoto" value="上传文件">-->
+            <!--            <input id="detailPhoto" type="file" name="detailPhoto" value="上传文件">-->
             <el-input placeholder="请输入日记标题" clearable v-model="diaryTitle"></el-input>
             <el-input type="textarea" :raws="4" v-model="diaryContent" :autosize="{minRows:4,maxRows:4}"
                       placeholder="请输入日记内容"></el-input>
             <el-input placeholder="请选择当前位置" clearable v-model="diaryLocation"></el-input>
             <el-button @click="getLocation">获取当前位置</el-button>
-            <div id="container" style="width: 500px;height: 300px">
+            <!--<div id="container" style="width: 500px;height: 300px">
 
-            </div>
+            </div>-->
             <el-row>
                 <el-button type="primary" @click="saveDiary">保存日志</el-button>
             </el-row>
@@ -53,7 +53,7 @@
         },
         methods: {
             pre() {
-                this.$router.push('/event')
+                this.$router.back()
             },
             handleAvatarSuccess(res, file) {
                 this.imageUrl = URL.createObjectURL(file.raw);
@@ -100,7 +100,7 @@
                     _that.diaryLocation = result.formattedAddress
                 })
             },
-            saveDiary(file) {
+            saveDiary() {
                 let diaryData = {
                     userId: this.$store.getters.userInfo.userId,
                     diaryTitle: this.diaryTitle,
@@ -110,8 +110,11 @@
                     diaryLocation: this.diaryLocation,
                     detailContent: this.diaryContent
                 }
-                // let detailPhoto = document.getElementById("detailPhoto").files[0];
-                let detailPhoto = this.$refs.detailPhoto.uploadFiles[0].raw;
+                let detailPhoto = ''
+                // detailPhoto = document.getElementById("detailPhoto").files[0];
+                if (this.$refs.detailPhoto.uploadFiles.length > 0) {
+                    detailPhoto = this.$refs.detailPhoto.uploadFiles[0].raw;
+                }
 
 
                 diaryData = JSON.stringify(diaryData)

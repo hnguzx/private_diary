@@ -1,12 +1,12 @@
 <template>
 
-    <keep-alive>
-        <el-container>
-            <el-header>
-                <el-button @click="pre">返回</el-button>
-                <span>选择事件</span>
-            </el-header>
-            <el-main class="el_main">
+    <el-container>
+        <el-header>
+            <el-button @click="pre">返回</el-button>
+            <span>选择事件</span>
+        </el-header>
+        <el-main class="el_main">
+            <keep-alive>
                 <el-carousel ref="carousel" :autoplay="false" :loop="false" height="170px" indicator-position="outside"
                              arrow="never">
                     <el-carousel-item v-for="(eventTow,i) in eventList" :key="i">
@@ -24,12 +24,12 @@
                         </v-touch>
                     </el-carousel-item>
                 </el-carousel>
-                <el-row>
-                    <el-button type="primary" @click="next">下一步</el-button>
-                </el-row>
-            </el-main>
-        </el-container>
-    </keep-alive>
+            </keep-alive>
+            <el-row>
+                <el-button type="primary" :disabled="event===''" @click="next">下一步</el-button>
+            </el-row>
+        </el-main>
+    </el-container>
 </template>
 
 <script>
@@ -71,7 +71,6 @@
                 return getValue('event', key)
             },
             moodChange() {
-                console.log('当前选择的事件是：' + this.event)
                 this.$root.$data.sharedState.diaryContent.event = this.event
             },
             left() {
@@ -89,8 +88,10 @@
 
         },
         mounted() {
-            console.log('当前天气是：' + this.$root.$data.sharedState.diaryContent.weather)
-            console.log('当前心情是：' + this.$root.$data.sharedState.diaryContent.mood)
+            this.event = this.$root.$data.sharedState.diaryContent.event
+        },
+        created() {
+            console.log('create...')
         }
     }
 </script>
