@@ -5,7 +5,7 @@ export function ajaxRequest(config) {
 
     // 公共参数
     const axiosExample = Axios.create({
-        baseURL: '', // 调用mock数据，实际应用时注释掉，打开下面的baseURL
+        baseURL: 'http://10.239.74.192', // 调用mock数据，实际应用时注释掉，打开下面的baseURL
         // baseURL: 'http://180.76.58.205/',
         // baseURL: 'http://192.168.199.217/', // 本地测试
         timeout: 5000,
