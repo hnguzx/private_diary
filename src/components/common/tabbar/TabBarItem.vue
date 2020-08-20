@@ -47,7 +47,7 @@
     /*让所有弹性盒模型对象的子元素都有相同的长度，且忽略它们内部的内容*/
     flex: 1;
     text-align: center;
-    height: 49px;
+    height: 50px;
     font-size: 14px;
   }
 

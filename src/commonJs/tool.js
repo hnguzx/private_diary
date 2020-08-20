@@ -45,3 +45,14 @@ export function getValue(key1, key2) {
     let value = dataDict[key1][key2]
     return value
 }
+
+export function formateDate(value) {
+    if (value.length > 8) {
+        value = value.substr(0, 8)
+    }
+    return value.substr(0, 4) + '-' + value.substr(4, 2) + '-' + value.substr(6, 2)
+}
+
+export function formateTime(value) {
+    return value.substr(0, 4) + '-' + value.substr(4, 2) + '-' + value.substr(6, 2) + ' ' + value.substr(8, 2) + ':' + value.substr(10, 2) + ':' + value.substr(12, 2)
+}

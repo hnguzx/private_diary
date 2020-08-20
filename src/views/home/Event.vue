@@ -2,8 +2,7 @@
 
     <el-container>
         <el-header>
-            <el-button @click="pre">返回</el-button>
-            <span>选择事件</span>
+            <el-page-header @back="pre" title=""></el-page-header>
         </el-header>
         <el-main class="el_main">
             <keep-alive>

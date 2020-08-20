@@ -1,8 +1,7 @@
 <template>
     <el-container>
         <el-header>
-            <el-button @click="pre">返回</el-button>
-            <span>正式编写日记</span>
+            <el-page-header @back="pre" title=""></el-page-header>
         </el-header>
         <el-main class="el_main">
             <el-upload
@@ -70,24 +69,6 @@
                 }
                 // return isJPG && isLt2M;
                 return isLt2M;
-            },
-            openMap() {
-                let map = new AMap.Map('container', {
-                    zoom: 15, //地图的缩放等级
-                    // center:[], // 地图的中心点坐标
-
-                })
-
-                AMap.plugin([
-                    'AMap.ToolBar',
-                    'AMap.Scale',
-                    'AMap.OverView',
-                    'AMap.MapType',
-                    'AMap.Geolocation'
-                ], function () {
-                    map.addControl(new AMap.Geolocation());
-                    map.addControl(new AMap.ToolBar());
-                })
             },
             /** 获取高德地图定位 */
             getLocation() {
