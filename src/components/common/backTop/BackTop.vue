@@ -1,12 +1,17 @@
 <template>
     <div class="back-top">
-        <img src="~assets/img/backTop.svg">
+        <el-image class="tomImg" :src="toTopImg"/>
     </div>
 </template>
 
 <script>
     export default {
-        name: "BackTop"
+        name: "BackTop",
+        data() {
+            return {
+                toTopImg: require('assets/img/other/backTop.svg')
+            }
+        }
     }
 </script>
 
@@ -17,7 +22,7 @@
         bottom: 60px;
     }
 
-    .back-top img {
+    .back-top .tomImg {
         width: 43px;
         height: 43px;
     }

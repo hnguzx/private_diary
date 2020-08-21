@@ -99,7 +99,6 @@
                         this.forbiddenButtonTime = 60
                         this.buttonText = this.forbiddenButtonTime + '秒后重新获取'
                         this.timer = setInterval(this.preventReSub, 1000)
-                    }).catch(err => {
                     })
                 });
 
@@ -149,7 +148,6 @@
                     }
                     updatePassword(params).then(data => {
                         this.changeView()
-                    }).catch(err => {
                     })
                 })
 

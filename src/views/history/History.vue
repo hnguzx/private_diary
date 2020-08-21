@@ -10,18 +10,25 @@
             </div>
         </nav-bar>
         <el-main class="el_main">
+            <el-input
+                    placeholder="请输入内容"
+                    v-model="diarySearch" style="margin-top: 40px">
+                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+            </el-input>
             <scroll class="content" ref="scrollRef"
                     @scroll="contentScroll"
                     :probe-type="3"
                     :pull-up-load="true"
-                    @pullingUp="getDiaryList">
+                    :pull-down-refresh="true"
+                    @pullingUp="getDiaryList"
+                    @pullingDown="refresh">
                 <el-row v-for="(item,index) in diaryList" :key="index">
-                    <el-col @click="intoDetail(item.diaryId)">
+                    <el-col @click.native="intoDetail(item)">
                         <el-card shadow="always" class="diary_item">
                             <p class="line_limit_length">{{item.diaryTitle}}</p>
                             <el-image :src="item.detailPhoto" fit="contain" lazy>
                                 <div slot="error" class="image-slot">
-                                    <i class="el-icon-picture-outline"></i>
+                                    <el-image :src="errorImg"></el-image>
                                 </div>
                             </el-image>
                             <div>
@@ -76,6 +83,8 @@
         data() {
             return {
                 isShow: false,
+                errorImg: require('assets/img/other/imgLoadFail.svg'),
+                diarySearch: '',
                 diaryList: [
                     {
                         diaryId: '1',
@@ -114,25 +123,68 @@
             }
         },
         methods: {
+            /**
+             * 获取数据字典信息
+             * @param key
+             * @param value
+             * @returns {*}
+             */
             getDataValue(key, value) {
                 return getValue(key, value)
             },
+            /**
+             * 格式化时间
+             * @param value
+             * @returns {*}
+             */
             getFormatTime(value) {
                 return formateDate(value)
             },
+            /**
+             * 监控滚动位置
+             * @param position
+             */
             contentScroll(position) {
-                this.isShow = position.y < (-100);
+                this.isShow = position.y < (-200);
             },
+            /**
+             * 返回顶部
+             */
             backClick() {
                 this.$refs.scrollRef.scrollTop(0, 0);
             },
+            /**
+             * 获取日记信息
+             */
             getDiaryList() {
-                console.log('获取日记信息1')
-                this.$refs.scrollRef.finishPullUp();
+                console.log('获取日记信息')
+                this.$refs.scrollRef.finishPullUp()
             },
-            intoDetail() {
+            /**
+             * 下拉刷新
+             */
+            refresh() {
+                console.log('刷新日记信息')
+                this.$refs.scrollRef.finishPullDown()
+            },
+            /**
+             * 进入日记详情
+             */
+            intoDetail(diary) {
                 console.log('日记详情')
+                this.$router.push({
+                    name: '/diaryDetail',
+                    params: {
+                        diary: diary
+                    }
+                })
             }
+        },
+        mounted() {
+            this.getDiaryList()
+        },
+        created() {
+
         }
     }
 </script>

@@ -25,6 +25,12 @@
                 default() {
                     return false;
                 }
+            },
+            pullDownRefresh: {
+                type: Boolean,
+                default() {
+                    return false;
+                }
             }
         },
         data() {
@@ -37,8 +43,14 @@
                 click: true,
                 probeType: this.probeType,
                 pullUpLoad: this.pullUpLoad,
+                pullDownRefresh: this.pullDownRefresh,
+
                 pullUpLoad: {
-                    threshold: -20 // 当上拉距离超过20px时触发 pullingUp 事件
+                    threshold: -50 // 当上拉距离超过20px时触发 pullingUp 事件
+                },
+                pullDownRefresh: {
+                    threshold: 90,
+                    top: 40
                 }
             });
             //监听滚动的位置;
@@ -49,6 +61,11 @@
             this.scroll.on('pullingUp', () => {
                 //发射一个自定义事件
                 this.$emit('pullingUp');
+            });
+            //监听下拉刷新事件
+            this.scroll.on('pullingDown', () => {
+                //发射一个自定义事件
+                this.$emit('pullingDown');
             });
             this.scrollTop(0, 0);
         },
@@ -69,6 +86,11 @@
             finishPullUp() {
                 this.scroll.finishPullUp();
                 // this.scroll && this.scroll.finishPullUp();
+            },
+            //当上拉加载事件完成后，调用此方法，才可以进行下一次上拉加载;
+            finishPullDown() {
+                this.scroll.finishPullDown();
+                // this.scroll && this.scroll.finishPullDown();
             }
         }
     }
@@ -79,6 +101,7 @@
         height: calc(100vh - 94px);
         background-color: #fff;
         overflow: hidden;
-        margin-top: 44px;
+        /*margin-top: 44px;*/
+        margin-top: 10px;
     }
 </style>

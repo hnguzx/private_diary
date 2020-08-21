@@ -34,9 +34,7 @@
                 :with-header="false"
                 ref="drawer">
             <div>
-                <!--                <keep-alive>-->
                 <router-view></router-view>
-                <!--                </keep-alive>-->
             </div>
         </el-drawer>
 

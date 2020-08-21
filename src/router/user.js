@@ -1,6 +1,7 @@
 const ForgetPassword = () => import('views/user/ForgetPassword')
 const Register = () => import('views/user/Register')
 const PersonCenter = () => import('views/user/PersonCenter')
+const DiaryDetail = () => import('views/history/DiaryDetail')
 
 let routes = [
     {
@@ -17,6 +18,11 @@ let routes = [
         path: '/forgetPassword',
         name: '/forgetPassword',
         component: ForgetPassword
+    },
+    {
+        path: '/diaryDetail',
+        name: '/diaryDetail',
+        component: DiaryDetail,
     }
 ]
 
