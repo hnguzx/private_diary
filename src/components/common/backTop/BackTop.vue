@@ -1,6 +1,6 @@
 <template>
     <div class="back-top">
-        <el-image class="tomImg" :src="toTopImg"/>
+        <el-image class="topImg" :src="toTopImg"/>
     </div>
 </template>
 
@@ -22,7 +22,7 @@
         bottom: 60px;
     }
 
-    .back-top .tomImg {
+    .back-top .topImg {
         width: 43px;
         height: 43px;
     }

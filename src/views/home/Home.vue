@@ -15,7 +15,7 @@
             <el-row>
                 <el-col>
                     <el-card>
-                        <img src="~assets/img/tabbar/file.svg"/>
+                        <el-image :src="diaryImg"/>
                         <span></span>
                         <div>
                             <time>{{currentDate}}</time>
@@ -57,6 +57,7 @@
                 dialog: false,
                 weatherList: ['SUNNY', 'CLOUDY', 'RAINY', 'SNOWY'],
                 weather: '',
+                diaryImg: require('assets/img/other/diary.svg')
             }
         },
         methods: {
