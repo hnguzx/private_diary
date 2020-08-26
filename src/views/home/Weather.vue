@@ -68,7 +68,6 @@
                 this.$router.push('/mood')
             },
             pre() {
-                // this.$router.back()
                 this.$parent.closeDrawer()
             },
             weatherChange() {
@@ -81,14 +80,12 @@
                 this.$refs.carousel.prev()
             }
         },
-        created() {
-            /*this.loading = true;
-            setTimeout(() => {
-                this.loading = false;
-            }, 1000);*/
-        },
         mounted() {
             this.weather = this.$root.$data.sharedState.diaryContent.weather
+            if(this.$route.query.isHome){
+                this.pre()
+            }
+
         }
     }
 </script>

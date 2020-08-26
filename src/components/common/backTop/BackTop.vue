@@ -1,6 +1,6 @@
 <template>
     <div class="back-top">
-        <el-image class="topImg" :src="toTopImg"/>
+        <img src="~assets/img/other/backTop.svg" class="top-img" />
     </div>
 </template>
 
@@ -9,7 +9,6 @@
         name: "BackTop",
         data() {
             return {
-                toTopImg: require('assets/img/other/backTop.svg')
             }
         }
     }
@@ -22,7 +21,7 @@
         bottom: 60px;
     }
 
-    .back-top .topImg {
+    .back-top .top-img {
         width: 43px;
         height: 43px;
     }

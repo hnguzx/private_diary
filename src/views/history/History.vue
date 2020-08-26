@@ -26,7 +26,7 @@
                     <el-col @click.native="intoDetail(item)">
                         <el-card shadow="always" class="diary_item">
                             <p class="line_limit_length">{{item.diaryTitle}}</p>
-                            <el-image :src="item.detailPhoto" fit="contain" lazy>
+                            <el-image v-if="item.detailPhoto" :src="item.detailPhoto" fit="contain" lazy>
                                 <div slot="error" class="image-slot">
                                     <el-image :src="errorImg"></el-image>
                                 </div>
@@ -69,9 +69,10 @@
 <script>
     import NavBar from "components/common/navbar/NavBar"
     import Scroll from "components/common/scroll/Scroll"
-    import BackTop from "components/common/backTop/BackTop";
+    import BackTop from "components/common/backTop/BackTop"
 
     import {getValue, formateDate} from "commonjs/tool"
+    import {getDiaryList} from "../../js/diary/diary"
 
     export default {
         name: "History",
@@ -90,7 +91,6 @@
                         diaryId: '1',
                         diaryTitle: '日记标题日记标题日记标题日记标题日记标题日记标题日记标题日记标题',
                         diaryContent: '日记主要内容日记主要内容日记主要内容日记主要内容日记主要内容',
-                        detailPhoto: 'http://10.239.74.180:81/File/20200817/2/2/1/7/7ff9ff8cfa9740.png',
                         diaryCreateTime: '20200301',
                         diaryLocation: '广东省深圳市南山区南山街道永新工业区永新汇',
                         diaryWeather: 'SUNNY_NIGHT',
@@ -101,7 +101,7 @@
                         diaryId: '2',
                         diaryTitle: '日记标题日记标题日记标题日记标题日记标题日记标题日记标题日记标题',
                         diaryContent: '日记主要内容日记主要内容日记主要内容日记主要内容日记主要内容',
-                        detailPhoto: 'http://10.239.74.180:81/File/20200817/2/2/1/7/7ff9ff8cfa9740.png',
+                        detailPhoto: '123',
                         diaryCreateTime: '20200301',
                         diaryLocation: '广东省深圳市南山区南山街道永新工业区永新汇',
                         diaryWeather: 'SUNNY_NIGHT',
@@ -157,7 +157,13 @@
              * 获取日记信息
              */
             getDiaryList() {
-                console.log('获取日记信息')
+                let params = {
+                    diarySearch: this.diarySearch,
+                    userId: this.$store.state.userId
+                }
+                getDiaryList(params).then(data => {
+                    console.log(params)
+                })
                 this.$refs.scrollRef.finishPullUp()
             },
             /**

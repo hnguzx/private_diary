@@ -45,7 +45,9 @@ Mock.mock(RegExp('/user/updateUser'), 'post', apiResponse(200, 'success', {
     userEmail: /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/
 }))
 
-Mock.mock(RegExp('/user/uploadImg'), 'post', apiResponse(200, 'success', null))
+Mock.mock(RegExp('/diary/uploadImg'), 'post', apiResponse(200, 'success', null))
+
+Mock.mock(RegExp('/diary/insertDiary'), 'post', apiResponse(200, 'success', null))
 
 Mock.mock(RegExp('/diary/getDiaryById'), 'post', apiResponse(200, 'success', {
     diaryId: Random.increment(),

@@ -39,46 +39,39 @@
             };
         },
         mounted() {
+            this.scroll = new BScroll(this.$refs.swiper, {
+                click: true,
+                probeType: this.probeType,
+                pullUpLoad: this.pullUpLoad,
+                pullDownRefresh: this.pullDownRefresh,
+
+                pullUpLoad: {
+                    threshold: -50 // 当上拉距离超过20px时触发 pullingUp 事件
+                },
+                pullDownRefresh: {
+                    threshold: 90,
+                    top: 40
+                }
+            })
+            // 监听滚动的位置;
+            this.scroll.on("scroll", position => {
+                this.$emit("scroll", position);
+            }),
+            //监听上拉加载事件
+            this.scroll.on('pullingUp', () => {
+                //发射一个自定义事件
+                this.$emit('pullingUp');
+            }),
+            //监听下拉刷新事件
+            this.scroll.on('pullingDown', () => {
+                //发射一个自定义事件
+                this.$emit('pullingDown');
+            }),
+            this.scrollTop(0, 0)
         },
-        created(){
-            let _this = this
-            this.$nextTick(
-                this.initScroll()
-            )
+        created() {
         },
         methods: {
-            // 初始化scroll
-            initScroll() {
-                this.scroll = new BScroll(this.$refs.swiper, {
-                        click: true,
-                        probeType: this.probeType,
-                        pullUpLoad: this.pullUpLoad,
-                        pullDownRefresh: this.pullDownRefresh,
-
-                        pullUpLoad: {
-                            threshold: -50 // 当上拉距离超过20px时触发 pullingUp 事件
-                        },
-                        pullDownRefresh: {
-                            threshold: 90,
-                            top: 40
-                        }
-                    })
-                    / 监听滚动的位置;
-                this.scroll.on("scroll", position => {
-                    this.$emit("scroll", position);
-                }),
-                    //监听上拉加载事件
-                    this.scroll.on('pullingUp', () => {
-                        //发射一个自定义事件
-                        this.$emit('pullingUp');
-                    }),
-                    //监听下拉刷新事件
-                    this.scroll.on('pullingDown', () => {
-                        //发射一个自定义事件
-                        this.$emit('pullingDown');
-                    }),
-                    this.scrollTop(0, 0)
-            },
             //返回顶部
             scrollTop(x, y, time = 300) {
                 //给它在外面做一层封装, 给它设置一个默认的滚动时间，300毫秒;
@@ -110,7 +103,7 @@
         height: calc(100vh - 94px);
         background-color: #fff;
         overflow: hidden;
-        /*margin-top: 44px;*/
-        margin-top: 10px;
+        margin-top: 44px;
+        /*margin-top: 10px;*/
     }
 </style>

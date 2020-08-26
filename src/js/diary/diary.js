@@ -7,3 +7,21 @@ export function getDiaryDetail(params) {
         data: params
     })
 }
+
+export function getDiaryList(params) {
+    return ajaxRequest({
+        url: '/diary/' + params.userId,
+        method: 'post',
+        data: params
+    })
+}
+
+export function saveDiary(params) {
+    return ajaxRequest({
+        url: '/diary/insertDiary',
+        method: 'post',
+        data: params,
+        contentType: false,
+        processData: false
+    })
+}

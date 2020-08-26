@@ -83,14 +83,14 @@
         name: "Index",
         data() {
             return {
-                userName: 'test',
-                password: '11111111',
-                emailOrPhone: 'test@qq.com',
+                userName: '',
+                password: '',
+                emailOrPhone: '',
                 email: '',
                 phone: '',
-                verifyCode: '123123',
-                birthDay: '2020-02-03',
-                sex: '1',
+                verifyCode: '',
+                birthDay: '',
+                sex: '',
                 buttonText: '获取验证码',
                 forbiddenButtonTime: 0,
                 timer: null
@@ -110,10 +110,13 @@
                         })
                         return;
                     }
-                    this.isEmailOrPhone()
+                    /*this.isEmailOrPhone()
                     let params = {
                         email: this.email,
                         phone:this.phone
+                    };*/
+                    let params = {
+                        emailOrPhone: this.emailOrPhone,
                     };
                     getVerifyCode(params).then(data => {
                         this.$message({
@@ -193,6 +196,7 @@
                 if (isEmail(this.emailOrPhone)) {
                     this.email = this.emailOrPhone
                 } else {
+                    this.$message('系统暂未开通手机注册！请使用邮箱注册')
                     this.phone = this.emailOrPhone
                 }
             }

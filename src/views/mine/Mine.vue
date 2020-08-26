@@ -110,7 +110,7 @@
                 diaryAndAddressTotal: 5,
                 scroll: null,
                 diaryId: [1, 2],
-                diaryAddressList: [116.406315, 39.908775, 113.91915, 22.50905]
+                diaryAddressList: [113.919449, 22.509066]
             }
         },
         methods: {
@@ -130,7 +130,9 @@
                 for (let i = 0; i < diaryAddressList.length; i += 2) {
                     let marker = new AMap.Marker({
                         // position: new AMap.LngLat(113.91915, 22.50905),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                        // position: new AMap.LngLat(diaryAddressList[i], diaryAddressList[i + 1]),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
                         position: new AMap.LngLat(diaryAddressList[i], diaryAddressList[i + 1]),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+
                     })
 
                     map.add(marker)
