@@ -6,10 +6,10 @@ export function ajaxRequest(config) {
     // 公共参数
     const axiosExample = Axios.create({
         // baseURL: '', // 调用mock数据，实际应用时注释掉，打开下面的baseURL
-        baseURL: 'http://localhost/', // 调用本地数据
+        baseURL: 'http://10.239.74.177',
         // baseURL: 'http://180.76.58.205',
         timeout: 5000,
-        // headers: {'content-type': 'application/x-www-form-urlencoded'},
+        headers: {'content-type': 'application/json'},
         responseType: 'json'
     });
     // request拦截
@@ -25,7 +25,7 @@ export function ajaxRequest(config) {
     // response拦截
     axiosExample.interceptors.response.use(res => {
         console.log(res.data)
-        return res.data.data
+        return res.data
     }, error => {
         return error;
     });

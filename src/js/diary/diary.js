@@ -10,8 +10,8 @@ export function getDiaryDetail(params) {
 
 export function getDiaryList(params) {
     return ajaxRequest({
-        url: '/diary/' + params.userId,
-        method: 'post',
+        url: '/diary/' + params.userId + '/' + params.diarySearch,
+        method: 'get',
         data: params
     })
 }

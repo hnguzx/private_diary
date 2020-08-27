@@ -11,7 +11,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import zhLocale from "element-ui/lib/locale/lang/zh-CN";
 import router from "./router"
-import './mockJs/mockServer'
+// import './mockJs/mockServer'
 import VueTouch from 'vue-touch'
 import vueStore from "./store"
 import store from "./vuex"

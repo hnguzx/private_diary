@@ -108,12 +108,14 @@
                 formData.append("diary", new Blob([diaryData], {type: "application/json"}))
 
                 saveDiary(formData).then(data => {
-                    this.$router.push({
-                        path: '/main/home',
-                        query: {
-                            isHome: true
-                        }
-                    })
+                    if (data.code == '200') {
+                        this.$router.push({
+                            path: '/main/home',
+                            query: {
+                                isHome: true
+                            }
+                        })
+                    }
                 })
             }
 

@@ -83,9 +83,6 @@
         },
         mounted() {
             this.mood = this.$root.$data.sharedState.diaryContent.mood
-        },
-        created() {
-            console.log('create...')
         }
     }
 </script>

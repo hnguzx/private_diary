@@ -28,16 +28,16 @@
                         </el-form-item>
                     </ValidationProvider>
 
-                    <ValidationProvider name="密码" rules="required|alpha_dash|min:8|max:20" v-slot="{errors}">
+                    <ValidationProvider name="密码" rules="required|alpha_dash|min:8" v-slot="{errors}">
                         <el-form-item label="新密码">
-                            <el-input placeholder="请输入密码" v-model="password" show-password></el-input>
+                            <el-input placeholder="请输入密码" v-model="password" show-password clearable></el-input>
                         </el-form-item>
                         <span class="error-msg ">{{errors[0]}}</span>
                     </ValidationProvider>
 
-                    <ValidationProvider name="确认密码" rules="required|alpha_dash|min:8|max:20" v-slot="{errors}">
+                    <ValidationProvider name="确认密码" rules="required|alpha_dash|min:8" v-slot="{errors}">
                         <el-form-item label="确认密码">
-                            <el-input placeholder="请输入密码" v-model="newPassword" show-password></el-input>
+                            <el-input placeholder="请输入密码" v-model="newPassword" show-password clearable></el-input>
                         </el-form-item>
                         <span class="error-msg ">{{errors[0]}}</span>
                     </ValidationProvider>
@@ -85,11 +85,14 @@
                         return;
                     }
 
-                    let params = {
+                    /*let params = {
                         email: this.email,
                         phone: this.phone,
                         password: this.password
-                    };
+                    };*/
+                    let params = {
+                        emailOrPhone: this.emailOrPhone
+                    }
                     getVerifyCode(params).then(data => {
                         this.$message({
                             showClose: false,
@@ -141,13 +144,18 @@
                     }
                     this.password = md5(this.password)
                     let params = {
-                        email: this.email,
-                        phone: this.phone,
+                        user: {
+                            userEmail: this.email,
+                            userPhone: this.phone,
+                            userPassword: this.password
+                        },
                         verifyCode: this.verifyCode,
-                        password: this.password
                     }
                     updatePassword(params).then(data => {
-                        this.changeView()
+                        if (data.code == '200') {
+                            this.$message('密码重置成功！')
+                            this.changeView()
+                        }
                     })
                 })
 

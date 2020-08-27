@@ -88,9 +88,6 @@
         },
         mounted() {
             this.event = this.$root.$data.sharedState.diaryContent.event
-        },
-        created() {
-            console.log('create...')
         }
     }
 </script>

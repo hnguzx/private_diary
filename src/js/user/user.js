@@ -10,15 +10,23 @@ export function getVerifyCode(params) {
 
 export function register(params) {
     return ajaxRequest({
-        url: '/user/insertUser',
+        url: '/user/insertUser/' + params.verifyCode,
         method: 'post',
-        data: params
+        data: params.user
     })
 }
 
 export function updatePassword(params) {
     return ajaxRequest({
-        url: '/user/updateUser',
+        url: '/user/resetPassword/' + params.verifyCode,
+        method: 'patch',
+        data: params.user
+    })
+}
+
+export function login(params) {
+    return ajaxRequest({
+        url: '/user/login',
         method: 'post',
         data: params
     })

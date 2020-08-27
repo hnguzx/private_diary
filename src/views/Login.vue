@@ -21,7 +21,7 @@
                     <ValidationProvider name="密码" rules="required|alpha_dash|min:8" ref="password"
                                         v-slot="{errors}">
                         <el-form-item label="密码">
-                            <el-input placeholder="请输入密码" v-model="password" show-password></el-input>
+                            <el-input placeholder="请输入密码" v-model="password" show-password clearable></el-input>
                         </el-form-item>
                         <span class="error-msg ">{{errors[0]}}</span>
                     </ValidationProvider>
@@ -40,8 +40,8 @@
 
 <script>
     import 'validator/validator'
-    import {login} from "js/login/login";
-    import {isEmail} from "commonjs/tool";
+    import {login} from "js/user/user"
+    import {isEmail} from "commonjs/tool"
     import md5 from 'js-md5'
 
     export default {
@@ -72,16 +72,20 @@
                     this.isEmailOrPhone()
                     this.password = md5(this.password)
                     let params = {
-                        email: this.email,
-                        phone: this.phone,
-                        password: this.password
+                        userEmail: this.email,
+                        userPhone: this.phone,
+                        userPassword: this.password
                     }
                     login(params).then(data => {
-                        this.$store.commit({
-                            type: 'updateUserInfo',
-                            data: data.obj
-                        })
-                        this.$router.push('/main')
+                        if (data.code == '200'){
+                            this.$store.commit({
+                                type: 'updateUserInfo',
+                                data: data.data
+                            })
+                            this.$router.push('/main')
+                            return
+                        }
+                        this.$message('登录失败')
                     })
                 })
             },

@@ -32,7 +32,7 @@
                                 </div>
                             </el-image>
                             <div>
-                                <p class="line_limit_length">{{item.diaryContent}}</p>
+                                <p class="line_limit_length">{{item.detailContent}}</p>
                             </div>
 
 
@@ -86,40 +86,7 @@
                 isShow: false,
                 errorImg: require('assets/img/other/imgLoadFail.svg'),
                 diarySearch: '',
-                diaryList: [
-                    {
-                        diaryId: '1',
-                        diaryTitle: '日记标题日记标题日记标题日记标题日记标题日记标题日记标题日记标题',
-                        diaryContent: '日记主要内容日记主要内容日记主要内容日记主要内容日记主要内容',
-                        diaryCreateTime: '20200301',
-                        diaryLocation: '广东省深圳市南山区南山街道永新工业区永新汇',
-                        diaryWeather: 'SUNNY_NIGHT',
-                        diaryMood: 'HAPPY',
-                        diaryEvent: 'MUSIC'
-                    },
-                    {
-                        diaryId: '2',
-                        diaryTitle: '日记标题日记标题日记标题日记标题日记标题日记标题日记标题日记标题',
-                        diaryContent: '日记主要内容日记主要内容日记主要内容日记主要内容日记主要内容',
-                        detailPhoto: '123',
-                        diaryCreateTime: '20200301',
-                        diaryLocation: '广东省深圳市南山区南山街道永新工业区永新汇',
-                        diaryWeather: 'SUNNY_NIGHT',
-                        diaryMood: 'HAPPY',
-                        diaryEvent: 'MUSIC'
-                    },
-                    {
-                        diaryId: '3',
-                        diaryTitle: '日记标题日记标题日记标题日记标题日记标题日记标题日记标题日记标题',
-                        diaryContent: '日记主要内容日记主要内容日记主要内容日记主要内容日记主要内容',
-                        detailPhoto: 'http://10.239.74.180:81/File/20200817/2/2/1/7/7ff9ff8cfa9740.png',
-                        diaryCreateTime: '20200301',
-                        diaryLocation: '广东省深圳市南山区南山街道永新工业区永新汇',
-                        diaryWeather: 'SUNNY_NIGHT',
-                        diaryMood: 'HAPPY',
-                        diaryEvent: 'MUSIC'
-                    }
-                ]
+                diaryList: []
             }
         },
         methods: {
@@ -159,10 +126,12 @@
             getDiaryList() {
                 let params = {
                     diarySearch: this.diarySearch,
-                    userId: this.$store.state.userId
+                    userId: this.$store.getters.userInfo.userId
                 }
                 getDiaryList(params).then(data => {
-                    console.log(params)
+                    if (data.code == '200'){
+                        this.diaryList = data.data
+                    }
                 })
                 this.$refs.scrollRef.finishPullUp()
             },
@@ -187,10 +156,10 @@
             }
         },
         mounted() {
-            this.getDiaryList()
+
         },
         created() {
-
+            this.getDiaryList()
         }
     }
 </script>

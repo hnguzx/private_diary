@@ -57,7 +57,7 @@
                             <el-input placeholder="请输入验证码" v-model="verifyCode" maxlength="6" clearable></el-input>
                         </el-form-item>
                     </ValidationProvider>
-                    <ValidationProvider name="密码" rules="required|alpha_dash|min:8|max:20" v-slot="{errors}">
+                    <ValidationProvider name="密码" rules="required|alpha_dash|min:8" v-slot="{errors}">
                         <el-form-item label="密码">
                             <el-input placeholder="请输入密码" v-model="password" show-password></el-input>
                         </el-form-item>
@@ -127,7 +127,6 @@
                         this.forbiddenButtonTime = 60
                         this.buttonText = this.forbiddenButtonTime + '秒后重新获取'
                         this.timer = setInterval(this.preventReSub, 1000)
-                    }).catch(err => {
                     })
                 });
             },
@@ -148,17 +147,23 @@
                     this.isEmailOrPhone()
                     this.password = md5(this.password)
                     let params = {
-                        userName: this.userName,
-                        birthDay: this.birthDay,
-                        sex: this.sex,
-                        email: this.email,
-                        phone: this.phone,
-                        verifyCode: this.verifyCode,
-                        password: this.password
+                        user: {
+                            userName: this.userName,
+                            userBirthday: this.birthDay,
+                            userSex: this.sex,
+                            userEmail: this.email,
+                            userPhone: this.phone,
+                            userPassword: this.password,
+                        },
+                        verifyCode: this.verifyCode
                     }
                     register(params).then(data => {
-                        this.changeView()
-                    }).catch(err => {
+                        if (data.code == '200') {
+                            this.$message('注册成功')
+                            this.changeView()
+                            return
+                        }
+                        this.$message(data.msg)
                     })
                 });
 
