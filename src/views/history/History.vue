@@ -10,11 +10,11 @@
             </div>
         </nav-bar>
         <el-main class="el_main">
-            <el-input
+            <!--<el-input
                     placeholder="请输入内容"
                     v-model="diarySearch" style="margin-top: 40px">
                 <i slot="prefix" class="el-input__icon el-icon-search"></i>
-            </el-input>
+            </el-input>-->
             <scroll class="content" ref="scrollRef"
                     @scroll="contentScroll"
                     :probe-type="3"
@@ -26,7 +26,7 @@
                     <el-col @click.native="intoDetail(item)">
                         <el-card shadow="always" class="diary_item">
                             <p class="line_limit_length">{{item.diaryTitle}}</p>
-                            <el-image v-if="item.detailPhoto" :src="item.detailPhoto" fit="contain" lazy>
+                            <el-image v-if="item.detailPhoto" :src="item.detailPhoto" fit="contain">
                                 <div slot="error" class="image-slot">
                                     <el-image :src="errorImg"></el-image>
                                 </div>
@@ -41,7 +41,7 @@
                                     {{getFormatTime(item.diaryCreateTime)}}
                                 </el-tag>
                             </div>
-                            <div class="float_left">
+                            <div class="float_left" v-if="item.diaryLocation">
                                 <el-tag type="info" size="mini" class="diary_tag line_limit_length">
                                     {{item.diaryLocation}}
                                 </el-tag>
@@ -86,6 +86,8 @@
                 isShow: false,
                 errorImg: require('assets/img/other/imgLoadFail.svg'),
                 diarySearch: '',
+                start: 0,
+                size: 5,
                 diaryList: []
             }
         },
@@ -125,21 +127,27 @@
              */
             getDiaryList() {
                 let params = {
+                    userId: this.$store.getters.userInfo.userId,
                     diarySearch: this.diarySearch,
-                    userId: this.$store.getters.userInfo.userId
+                    start: this.start,
+                    size: this.size,
                 }
                 getDiaryList(params).then(data => {
-                    if (data.code == '200'){
+                    if (data.code == '200') {
+                        // this.diaryList.push(data.data)
                         this.diaryList = data.data
+                        this.start++
                     }
                 })
-                this.$refs.scrollRef.finishPullUp()
             },
             /**
              * 下拉刷新
              */
             refresh() {
                 console.log('刷新日记信息')
+                this.start = 0
+                this.diaryList = []
+                this.getDiaryList()
                 this.$refs.scrollRef.finishPullDown()
             },
             /**

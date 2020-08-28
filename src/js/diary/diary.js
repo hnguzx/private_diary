@@ -9,10 +9,15 @@ export function getDiaryDetail(params) {
 }
 
 export function getDiaryList(params) {
+    if (params.diarySearch == '' || params.diarySearch == undefined){
+        return ajaxRequest({
+            url: '/diary/' + params.userId + '/' + params.start + '/' + params.size,
+            method: 'get'
+        })
+    }
     return ajaxRequest({
-        url: '/diary/' + params.userId + '/' + params.diarySearch,
-        method: 'get',
-        data: params
+        url: '/diary/' + params.userId + '/' + params.start + '/' + params.size + '/' + params.diarySearch,
+        method: 'get'
     })
 }
 
