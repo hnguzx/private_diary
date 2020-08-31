@@ -9,7 +9,7 @@ export function getDiaryDetail(params) {
 }
 
 export function getDiaryList(params) {
-    if (params.diarySearch == '' || params.diarySearch == undefined){
+    if (params.diarySearch == '' || params.diarySearch == undefined) {
         return ajaxRequest({
             url: '/diary/' + params.userId + '/' + params.start + '/' + params.size,
             method: 'get'
@@ -28,5 +28,12 @@ export function saveDiary(params) {
         data: params,
         contentType: false,
         processData: false
+    })
+}
+
+export function getDiaryBaseInfo(params) {
+    return ajaxRequest({
+        url: '/diary/getDiaryNumber/' + params.userId,
+        method: 'get'
     })
 }

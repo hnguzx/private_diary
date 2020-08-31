@@ -15,12 +15,14 @@ import router from "./router"
 import VueTouch from 'vue-touch'
 import vueStore from "./store"
 import store from "./vuex"
+import echarts from 'echarts'
 
 import App from './App.vue'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI, {zhLocale})
 Vue.use(VueTouch)
+Vue.prototype.$echarts = echarts
 
 
 new Vue({

@@ -48,8 +48,8 @@
         name: "Login",
         data() {
             return {
-                emailOrPhone: '',
-                password: '',
+                emailOrPhone: 'hnguzx@qq.com',
+                password: 'hnguzx123',
                 email: '',
                 phone: ''
             }

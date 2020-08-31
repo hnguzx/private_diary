@@ -25,7 +25,11 @@ export function ajaxRequest(config) {
     // response拦截
     axiosExample.interceptors.response.use(res => {
         console.log(res.data)
-        return res.data
+        if (res.data.code == '200') {
+            return res.data
+        }
+        this.$message('error:' + res.data.code + 'msg' + res.data.msg)
+
     }, error => {
         return error;
     });

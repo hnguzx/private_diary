@@ -21,7 +21,8 @@
                         <span>本周已记录{{weekRecordTotal}}天</span>
                     </el-col>
                     <el-col :span="6">
-                        <el-avatar :size="50" :src="circleUrl"></el-avatar>
+                        <!--                        <el-avatar :size="50" :src="circleUrl"></el-avatar>-->
+                        <el-avatar :size="50"></el-avatar>
                     </el-col>
                 </el-row>
                 <el-divider></el-divider>
@@ -39,7 +40,7 @@
                 <el-divider></el-divider>
                 <el-tabs type="border-card" :stretch="true">
                     <el-tab-pane label="心情">
-                        心情
+                        <div id="mood" style="width: 320px;height:240px;"></div>
                     </el-tab-pane>
                     <el-tab-pane label="天气">
                         天气
@@ -56,7 +57,7 @@
                                 <span>相册</span>
                                 <span style="float: right">{{photoTotal}}张照片</span>
                             </div>
-                            <el-image :src="circleUrl"/>
+                            <el-image :src="imaUrl"/>
                         </el-card>
                     </el-col>
                 </el-row>
@@ -91,6 +92,8 @@
     import Scroll from "components/common/scroll/Scroll"
 
     import AMap from 'AMap'
+    import {getDiaryBaseInfo} from "js/diary/diary"
+    import {getValue, formateDate} from "commonjs/tool"
 
     export default {
         name: "Mine",
@@ -100,20 +103,32 @@
         },
         data() {
             return {
-                circleUrl: require('assets/img/head/boy_1.svg'),
-                weekRecordTotal: 3,
-                diaryTotal: 20,
-                recordDays: 20,
-                wordsTotal: 100,
-                photoTotal: 10,
-                addressTotal: 5,
-                diaryAndAddressTotal: 5,
+                circleUrl: [],
+                weekRecordTotal: '',
+                diaryTotal: '',
+                recordDays: '',
+                wordsTotal: '',
+                photoTotal: '',
+                addressTotal: '',
+                diaryAndAddressTotal: '',
                 scroll: null,
-                diaryId: [1, 2],
-                diaryAddressList: [113.919449, 22.509066]
+                diaryId: [],
+                imaUrl: [],
+                diaryAddressList: [],
+                longitudeList: [],
+                latitudeList: []
             }
         },
         methods: {
+            /**
+             * 获取数据字典信息
+             * @param key
+             * @param value
+             * @returns {*}
+             */
+            getDataValue(key, value) {
+                return getValue(key, value)
+            },
             /**
              * 打开地图
              */
@@ -188,10 +203,65 @@
                         diaryId: diaryId
                     }
                 })
+            },
+            /**
+             * 获取用户的日记基本信息
+             */
+            getDiaryBaseInfo(userId) {
+                let params = {
+                    userId: userId
+                }
+                getDiaryBaseInfo(params).then(data => {
+                    if (data.code == '200') {
+                        let result = data.data
+                        this.weekRecordTotal = result.weekRecordTotal
+                        this.diaryTotal = result.diaryTotal
+                        this.recordDays = result.recordDays
+                        this.wordsTotal = result.wordsTotal
+                        this.photoTotal = result.photoTotal
+                        this.addressTotal = result.addressTotal
+                        this.diaryAndAddressTotal = result.DiaryAndAddressTotal
+                    }
+                })
+            },
+            /**
+             * 初始化表格
+             */
+            initECharts() {
+                // 基于准备好的dom，初始化echarts实例
+                let moodECharts = this.$echarts.init(document.getElementById('mood'));
+
+                // 指定图表的配置项和数据
+                let option = {
+                    color: ['#3398DB'],
+                    title: {
+                        text: ''
+                    },
+                    tooltip: {},
+                    legend: {
+                        data: []
+                    },
+                    xAxis: {
+                        data: ['开心', '充实', '惊喜', '得意', '温暖', '平静']
+                    },
+                    yAxis: {},
+                    series: [{
+                        name: '',
+                        type: 'bar',
+                        data: ['5', '200','50','100','9','30']
+                    }]
+                };
+                // 使用刚指定的配置项和数据显示图表。
+                moodECharts.setOption(option);
             }
+        },
+        created() {
+            this.getDiaryBaseInfo(this.$store.getters.userInfo.userId)
+
         },
         mounted() {
             this.openMap(this.diaryId, this.diaryAddressList)
+            this.initECharts()
         }
     }
 </script>
