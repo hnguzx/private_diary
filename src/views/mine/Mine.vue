@@ -11,9 +11,14 @@
         </nav-bar>
 
 
-        <el-main>
-            <scroll class="content" ref="scrollRef"
-                    :probe-type="3">
+        <scroll class="content"
+                ref="scrollRef"
+                :pull-down-refresh="true"
+                @pullingDown="refresh"
+                :probe-type="3">
+            <el-main>
+
+
                 <el-row :gutter="20">
                     <el-col :span="18">
                         <span>{{this.$store.getters.userInfo.userName}}</span>
@@ -40,13 +45,13 @@
                 <el-divider></el-divider>
                 <el-tabs type="border-card" :stretch="true">
                     <el-tab-pane label="心情">
-                        <div id="mood" style="width: 320px;height:240px;"></div>
+                        <div id="mood" class="statistics-charts"></div>
                     </el-tab-pane>
                     <el-tab-pane label="天气">
-                        天气
+                        <div id="weather" class="statistics-charts"></div>
                     </el-tab-pane>
                     <el-tab-pane label="活动">
-                        活动
+                        <div id="event" class="statistics-charts"></div>
                     </el-tab-pane>
                 </el-tabs>
                 <el-divider></el-divider>
@@ -57,7 +62,7 @@
                                 <span>相册</span>
                                 <span style="float: right">{{photoTotal}}张照片</span>
                             </div>
-                            <el-image :src="imaUrl"/>
+                            <!--                            <el-image :src="imaUrl"/>-->
                         </el-card>
                     </el-col>
                 </el-row>
@@ -78,10 +83,8 @@
                     </el-col>
                 </el-row>
                 <el-divider></el-divider>
-            </scroll>
-
-
-        </el-main>
+            </el-main>
+        </scroll>
 
 
     </el-container>
@@ -92,7 +95,7 @@
     import Scroll from "components/common/scroll/Scroll"
 
     import AMap from 'AMap'
-    import {getDiaryBaseInfo} from "js/diary/diary"
+    import {getDiaryBaseInfo, getImgInfo, getAddressInfo, getDiaryLabelInfo} from "js/diary/diary"
     import {getValue, formateDate} from "commonjs/tool"
 
     export default {
@@ -111,6 +114,9 @@
                 photoTotal: '',
                 addressTotal: '',
                 diaryAndAddressTotal: '',
+                weatherList: [],
+                moodList: [],
+                eventList: [],
                 scroll: null,
                 diaryId: [],
                 imaUrl: [],
@@ -225,11 +231,60 @@
                 })
             },
             /**
+             * 获取用户的相册信息
+             */
+            getImgInfo(userId) {
+                let params = {
+                    userId: userId
+                }
+                getImgInfo(params).then(data => {
+                    if (data.code == '200') {
+                        let result = data.data
+                    }
+                })
+            },
+            /**
+             * 获取用户的地址信息
+             */
+            getAddressInfo(userId) {
+                let params = {
+                    userId: userId
+                }
+                getAddressInfo(params).then(data => {
+                    if (data.code == '200') {
+                        let result = data.data
+                        for (let item in result) {
+                            console.log('地址信息')
+                            console.log(item)
+                        }
+                    }
+                })
+            },
+            /**
+             * 获取用户的标签信息
+             */
+            getDiaryLabelInfo(userId) {
+                let params = {
+                    userId: userId
+                }
+                getDiaryLabelInfo(params).then(data => {
+                    if (data.code == '200') {
+                        let result = data.data
+                        for (let item in result) {
+                            console.log('标签信息')
+                            console.log(item)
+                        }
+                    }
+                })
+            },
+            /**
              * 初始化表格
              */
             initECharts() {
                 // 基于准备好的dom，初始化echarts实例
                 let moodECharts = this.$echarts.init(document.getElementById('mood'));
+                let weatherECharts = this.$echarts.init(document.getElementById('weather'));
+                let eventECharts = this.$echarts.init(document.getElementById('event'));
 
                 // 指定图表的配置项和数据
                 let option = {
@@ -242,30 +297,42 @@
                         data: []
                     },
                     xAxis: {
-                        data: ['开心', '充实', '惊喜', '得意', '温暖', '平静']
+                        data: []
                     },
                     yAxis: {},
                     series: [{
                         name: '',
-                        type: 'bar',
-                        data: ['5', '200','50','100','9','30']
+                        type: '',
+                        data: []
                     }]
                 };
                 // 使用刚指定的配置项和数据显示图表。
                 moodECharts.setOption(option);
+            },
+            refresh() {
+                this.getDiaryBaseInfo(this.$store.getters.userInfo.userId)
+                this.openMap(this.diaryId, this.diaryAddressList)
+                this.initECharts()
+                this.$refs.scrollRef.finishPullDown()
             }
         },
         created() {
             this.getDiaryBaseInfo(this.$store.getters.userInfo.userId)
+            this.getImgInfo(this.$store.getters.userInfo.userId)
+            this.getAddressInfo(this.$store.getters.userInfo.userId)
+            this.getDiaryLabelInfo(this.$store.getters.userInfo.userId)
 
         },
         mounted() {
             this.openMap(this.diaryId, this.diaryAddressList)
-            this.initECharts()
+            // this.initECharts()
         }
     }
 </script>
 
 <style scoped>
-
+    .statistics-charts {
+        width: 320px;
+        height: 240px;
+    }
 </style>

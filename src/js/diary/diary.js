@@ -37,3 +37,24 @@ export function getDiaryBaseInfo(params) {
         method: 'get'
     })
 }
+
+export function getImgInfo(params) {
+    return ajaxRequest({
+        url: '/diary/getImgInfo/' + params.userId,
+        method: 'get'
+    })
+}
+
+export function getAddressInfo(params) {
+    return ajaxRequest({
+        url: '/diary/getAddressInfo/' + params.userId,
+        method: 'get'
+    })
+}
+
+export function getDiaryLabelInfo(params) {
+    return ajaxRequest({
+        url: '/diary/getDiaryLabelInfo/' + params.userId,
+        method: 'get'
+    })
+}
