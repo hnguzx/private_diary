@@ -62,7 +62,7 @@
                                 <span>相册</span>
                                 <span style="float: right">{{photoTotal}}张照片</span>
                             </div>
-                            <!--                            <el-image :src="imaUrl"/>-->
+                            <!--                            <el-image v-for="item in imageList" :src="item.imgUrl"/>-->
                         </el-card>
                     </el-col>
                 </el-row>
@@ -119,10 +119,11 @@
                 eventList: [],
                 scroll: null,
                 diaryId: [],
-                imaUrl: [],
+                imageList: [],
                 diaryAddressList: [],
                 longitudeList: [],
-                latitudeList: []
+                latitudeList: [],
+                tempList: []
             }
         },
         methods: {
@@ -138,7 +139,7 @@
             /**
              * 打开地图
              */
-            openMap(diaryId, diaryAddressList) {
+            openMap(diaryAddressList) {
                 let _this = this
                 let map = new AMap.Map('gaodeMap', {
                     zoom: 8, //地图的缩放等级
@@ -152,15 +153,15 @@
                     let marker = new AMap.Marker({
                         // position: new AMap.LngLat(113.91915, 22.50905),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
                         // position: new AMap.LngLat(diaryAddressList[i], diaryAddressList[i + 1]),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-                        position: new AMap.LngLat(diaryAddressList[i], diaryAddressList[i + 1]),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                        position: new AMap.LngLat(diaryAddressList[i].longitude, diaryAddressList[i].latitude),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
 
                     })
 
                     map.add(marker)
 
                     AMap.event.addListener(marker, 'click', function () {
-                        console.log('当前日记id为：' + diaryId[i / 2])
-                        _this.intoDetail(diaryId[i / 2])
+                        console.log(diaryAddressList)
+                        // _this.intoDetail()
                     })
                 }
 
@@ -234,12 +235,14 @@
              * 获取用户的相册信息
              */
             getImgInfo(userId) {
+                let _this = this
                 let params = {
                     userId: userId
                 }
                 getImgInfo(params).then(data => {
                     if (data.code == '200') {
                         let result = data.data
+                        _this.imageList.push(result.imgInfo)
                     }
                 })
             },
@@ -247,16 +250,14 @@
              * 获取用户的地址信息
              */
             getAddressInfo(userId) {
+                let _this = this
                 let params = {
                     userId: userId
                 }
                 getAddressInfo(params).then(data => {
                     if (data.code == '200') {
                         let result = data.data
-                        for (let item in result) {
-                            console.log('地址信息')
-                            console.log(item)
-                        }
+                        _this.diaryAddressList = result.addressInfo
                     }
                 })
             },
@@ -264,55 +265,83 @@
              * 获取用户的标签信息
              */
             getDiaryLabelInfo(userId) {
+                let _this = this
                 let params = {
                     userId: userId
                 }
                 getDiaryLabelInfo(params).then(data => {
                     if (data.code == '200') {
                         let result = data.data
-                        for (let item in result) {
-                            console.log('标签信息')
-                            console.log(item)
-                        }
+                        _this.weatherList.push(result.weatherList)
+                        _this.moodList.push(result.moodList)
+                        _this.eventList.push(result.eventList)
+                        this.initECharts('weather', _this.weatherList, 'weather')
+                        this.initECharts('event', _this.eventList, 'event')
+                        this.initECharts('mood', _this.moodList, 'mood')
                     }
                 })
             },
             /**
              * 初始化表格
              */
-            initECharts() {
+            initECharts(containerId, dataList, labelType) {
                 // 基于准备好的dom，初始化echarts实例
-                let moodECharts = this.$echarts.init(document.getElementById('mood'));
-                let weatherECharts = this.$echarts.init(document.getElementById('weather'));
-                let eventECharts = this.$echarts.init(document.getElementById('event'));
+                let ECharts = this.$echarts.init(document.getElementById(containerId));
+                let _this = this
 
                 // 指定图表的配置项和数据
                 let option = {
                     color: ['#3398DB'],
-                    title: {
+                    /*title: {
                         text: ''
+                    },*/
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                        }
                     },
-                    tooltip: {},
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
                     legend: {
                         data: []
                     },
-                    xAxis: {
-                        data: []
-                    },
-                    yAxis: {},
+                    xAxis: [
+                        {
+                            type: 'category',
+                            data: [],
+                            axisTick: {
+                                alignWithLabel: true
+                            }
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value'
+                        }
+                    ],
                     series: [{
                         name: '',
-                        type: '',
+                        type: 'bar',
+                        barWidth: '60%',
                         data: []
                     }]
                 };
+                for (let i = 0; i < dataList[0].length; i++) {
+                    option.xAxis[0].data.push(_this.getDataValue(labelType, dataList[0][i].label))
+                    option.series[0].data.push(dataList[0][i].times)
+                }
                 // 使用刚指定的配置项和数据显示图表。
-                moodECharts.setOption(option);
+                ECharts.setOption(option);
             },
             refresh() {
                 this.getDiaryBaseInfo(this.$store.getters.userInfo.userId)
-                this.openMap(this.diaryId, this.diaryAddressList)
-                this.initECharts()
+                this.openMap(this.diaryAddressList)
+                // this.initECharts('weather')
                 this.$refs.scrollRef.finishPullDown()
             }
         },
@@ -321,12 +350,12 @@
             this.getImgInfo(this.$store.getters.userInfo.userId)
             this.getAddressInfo(this.$store.getters.userInfo.userId)
             this.getDiaryLabelInfo(this.$store.getters.userInfo.userId)
-
         },
         mounted() {
-            this.openMap(this.diaryId, this.diaryAddressList)
-            // this.initECharts()
+        debugger
+            this.openMap(this.diaryAddressList)
         }
+
     }
 </script>
 
