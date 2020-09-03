@@ -5,7 +5,7 @@
                 <i class="el-icon-arrow-left"></i>
             </div>
             <div slot="nav-center">我的</div>
-            <div slot="nav-right">
+            <div slot="nav-right" @click="setting">
                 <i class="el-icon-setting"></i>
             </div>
         </nav-bar>
@@ -26,8 +26,7 @@
                         <span>本周已记录{{weekRecordTotal}}天</span>
                     </el-col>
                     <el-col :span="6">
-                        <!--                        <el-avatar :size="50" :src="circleUrl"></el-avatar>-->
-                        <el-avatar :size="50"></el-avatar>
+                        <el-avatar :size="50" :src="headImage"></el-avatar>
                     </el-col>
                 </el-row>
                 <el-divider></el-divider>
@@ -62,7 +61,16 @@
                                 <span>相册</span>
                                 <span style="float: right">{{photoTotal}}张照片</span>
                             </div>
-                            <!--                            <el-image v-for="item in imageList" :src="item.imgUrl"/>-->
+                            <el-carousel height="170px" :loop="true" type="card" indicator-position="none" arrow="never"
+                                         :autoplay="true">
+                                <el-carousel-item v-for="(item,index) in imageList" :key="index">
+                                    <el-image :src="item.imgUrl" @click="intoDetail(item.diaryId)">
+                                        <!--<div slot="error">
+                                            <i class="el-icon-picture-outline"></i>
+                                        </div>-->
+                                    </el-image>
+                                </el-carousel-item>
+                            </el-carousel>
                         </el-card>
                     </el-col>
                 </el-row>
@@ -82,7 +90,6 @@
                         </el-card>
                     </el-col>
                 </el-row>
-                <el-divider></el-divider>
             </el-main>
         </scroll>
 
@@ -106,7 +113,7 @@
         },
         data() {
             return {
-                circleUrl: [],
+                headImage: 'http://' + this.$store.getters.userInfo.userHead,
                 weekRecordTotal: '',
                 diaryTotal: '',
                 recordDays: '',
@@ -151,8 +158,6 @@
 
                 for (let i = 0; i < diaryAddressList.length; i += 2) {
                     let marker = new AMap.Marker({
-                        // position: new AMap.LngLat(113.91915, 22.50905),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-                        // position: new AMap.LngLat(diaryAddressList[i], diaryAddressList[i + 1]),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
                         position: new AMap.LngLat(diaryAddressList[i].longitude, diaryAddressList[i].latitude),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
 
                     })
@@ -160,8 +165,7 @@
                     map.add(marker)
 
                     AMap.event.addListener(marker, 'click', function () {
-                        console.log(diaryAddressList)
-                        // _this.intoDetail()
+                        _this.intoDetail(diaryAddressList[i].diaryId)
                     })
                 }
 
@@ -242,7 +246,7 @@
                 getImgInfo(params).then(data => {
                     if (data.code == '200') {
                         let result = data.data
-                        _this.imageList.push(result.imgInfo)
+                        _this.imageList = result.imgInfo
                     }
                 })
             },
@@ -258,6 +262,7 @@
                     if (data.code == '200') {
                         let result = data.data
                         _this.diaryAddressList = result.addressInfo
+                        this.openMap(_this.diaryAddressList)
                     }
                 })
             },
@@ -272,9 +277,9 @@
                 getDiaryLabelInfo(params).then(data => {
                     if (data.code == '200') {
                         let result = data.data
-                        _this.weatherList.push(result.weatherList)
-                        _this.moodList.push(result.moodList)
-                        _this.eventList.push(result.eventList)
+                        _this.weatherList = result.weatherList
+                        _this.moodList = result.moodList
+                        _this.eventList = result.eventList
                         this.initECharts('weather', _this.weatherList, 'weather')
                         this.initECharts('event', _this.eventList, 'event')
                         this.initECharts('mood', _this.moodList, 'mood')
@@ -321,7 +326,8 @@
                     ],
                     yAxis: [
                         {
-                            type: 'value'
+                            type: 'value',
+                            minInterval: 1
                         }
                     ],
                     series: [{
@@ -331,18 +337,29 @@
                         data: []
                     }]
                 };
-                for (let i = 0; i < dataList[0].length; i++) {
-                    option.xAxis[0].data.push(_this.getDataValue(labelType, dataList[0][i].label))
-                    option.series[0].data.push(dataList[0][i].times)
+                for (let i = 0; i < dataList.length; i++) {
+                    option.xAxis[0].data.push(_this.getDataValue(labelType, dataList[i].label))
+                    option.series[0].data.push(dataList[i].times)
                 }
                 // 使用刚指定的配置项和数据显示图表。
                 ECharts.setOption(option);
             },
+            /**
+             * 刷新页面
+             */
             refresh() {
                 this.getDiaryBaseInfo(this.$store.getters.userInfo.userId)
-                this.openMap(this.diaryAddressList)
-                // this.initECharts('weather')
+                this.getImgInfo(this.$store.getters.userInfo.userId)
+                this.getAddressInfo(this.$store.getters.userInfo.userId)
+                this.getDiaryLabelInfo(this.$store.getters.userInfo.userId)
                 this.$refs.scrollRef.finishPullDown()
+            },
+
+            /**
+             * 进入设置页面
+             */
+            setting() {
+                console.log('进入设置页面')
             }
         },
         created() {
@@ -350,10 +367,6 @@
             this.getImgInfo(this.$store.getters.userInfo.userId)
             this.getAddressInfo(this.$store.getters.userInfo.userId)
             this.getDiaryLabelInfo(this.$store.getters.userInfo.userId)
-        },
-        mounted() {
-        debugger
-            this.openMap(this.diaryAddressList)
         }
 
     }

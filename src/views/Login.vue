@@ -49,7 +49,7 @@
         data() {
             return {
                 emailOrPhone: 'hnguzx@qq.com',
-                password: 'hnguzx123',
+                password: 'test1234',
                 email: '',
                 phone: ''
             }
