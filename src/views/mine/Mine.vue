@@ -65,9 +65,9 @@
                                          :autoplay="true">
                                 <el-carousel-item v-for="(item,index) in imageList" :key="index">
                                     <el-image :src="item.imgUrl" @click="intoDetail(item.diaryId)">
-                                        <!--<div slot="error">
-                                            <i class="el-icon-picture-outline"></i>
-                                        </div>-->
+                                         <div slot="error">
+                                             <el-image :src="errorImg"></el-image>
+                                         </div>
                                     </el-image>
                                 </el-carousel-item>
                             </el-carousel>
@@ -103,7 +103,7 @@
 
     import AMap from 'AMap'
     import {getDiaryBaseInfo, getImgInfo, getAddressInfo, getDiaryLabelInfo} from "js/diary/diary"
-    import {getValue, formateDate} from "commonjs/tool"
+    import {getValue} from "commonjs/tool"
 
     export default {
         name: "Mine",
@@ -114,6 +114,7 @@
         data() {
             return {
                 headImage: 'http://' + this.$store.getters.userInfo.userHead,
+                errorImg: require('assets/img/other/imgLoadFail.svg'),
                 weekRecordTotal: '',
                 diaryTotal: '',
                 recordDays: '',
@@ -156,7 +157,7 @@
                 })
                 let geolocation = null
 
-                for (let i = 0; i < diaryAddressList.length; i += 2) {
+                for (let i = 0; i < diaryAddressList.length; i++) {
                     let marker = new AMap.Marker({
                         position: new AMap.LngLat(diaryAddressList[i].longitude, diaryAddressList[i].latitude),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
 
@@ -221,16 +222,16 @@
             getDiaryBaseInfo(userId) {
                 let params = {
                     userId: userId
-                }
+                };
                 getDiaryBaseInfo(params).then(data => {
                     if (data.code == '200') {
-                        let result = data.data
-                        this.weekRecordTotal = result.weekRecordTotal
-                        this.diaryTotal = result.diaryTotal
-                        this.recordDays = result.recordDays
-                        this.wordsTotal = result.wordsTotal
-                        this.photoTotal = result.photoTotal
-                        this.addressTotal = result.addressTotal
+                        let result = data.data;
+                        this.weekRecordTotal = result.weekRecordTotal;
+                        this.diaryTotal = result.diaryTotal;
+                        this.recordDays = result.recordDays;
+                        this.wordsTotal = result.wordsTotal;
+                        this.photoTotal = result.photoTotal;
+                        this.addressTotal = result.addressTotal;
                         this.diaryAndAddressTotal = result.DiaryAndAddressTotal
                     }
                 })
@@ -363,9 +364,9 @@
             }
         },
         created() {
-            this.getDiaryBaseInfo(this.$store.getters.userInfo.userId)
-            this.getImgInfo(this.$store.getters.userInfo.userId)
-            this.getAddressInfo(this.$store.getters.userInfo.userId)
+            this.getDiaryBaseInfo(this.$store.getters.userInfo.userId);
+            this.getImgInfo(this.$store.getters.userInfo.userId);
+            this.getAddressInfo(this.$store.getters.userInfo.userId);
             this.getDiaryLabelInfo(this.$store.getters.userInfo.userId)
         }
 

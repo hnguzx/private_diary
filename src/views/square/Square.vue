@@ -15,14 +15,14 @@
                     :probe-type="3"
                     :pull-up-load="true"
                     :pull-down-refresh="true"
-                    @pullingUp="getDiaryList"
+                    @pullingUp="getBlogList"
                     @pullingDown="refresh">
-                <el-row v-for="(item,index) in diaryList" :key="index">
+                <el-row v-for="(item,index) in blogList" :key="index">
                     <el-col @click.native="intoDetail(item)">
                         <el-card shadow="always" class="diary_item">
                             <p class="line_limit_length">{{item.diaryTitle}}</p>
-                            <el-image v-if="item.detailPhoto" :src="item.detailPhoto" fit="contain" lazy>
-                                <div slot="error" class="image-slot">
+                            <el-image v-if="item.diaryPhoto" :src="item.diaryPhoto" fit="contain" lazy>
+                                <div slot="error">
                                     <el-image :src="errorImg"></el-image>
                                 </div>
                             </el-image>
@@ -57,7 +57,7 @@
                 </el-row>
             </scroll>
             <back-top @click.native="backClick" v-show="isShow"/>
-            <el-image class="add_img" :src="addImg"></el-image>
+            <el-image @click="addBlog" class="add_img" :src="addImg"></el-image>
         </el-main>
     </el-container>
 </template>
@@ -82,40 +82,7 @@
                 isShow: false,
                 errorImg: require('assets/img/other/imgLoadFail.svg'),
                 diarySearch: '',
-                diaryList: [
-                    {
-                        diaryId: '1',
-                        diaryTitle: '日记标题日记标题日记标题日记标题日记标题日记标题日记标题日记标题',
-                        diaryContent: '日记主要内容日记主要内容日记主要内容日记主要内容日记主要内容',
-                        diaryCreateTime: '20200301',
-                        diaryLocation: '广东省深圳市南山区南山街道永新工业区永新汇',
-                        diaryWeather: 'SUNNY_NIGHT',
-                        diaryMood: 'HAPPY',
-                        diaryEvent: 'MUSIC'
-                    },
-                    {
-                        diaryId: '2',
-                        diaryTitle: '日记标题日记标题日记标题日记标题日记标题日记标题日记标题日记标题',
-                        diaryContent: '日记主要内容日记主要内容日记主要内容日记主要内容日记主要内容',
-                        detailPhoto: '123',
-                        diaryCreateTime: '20200301',
-                        diaryLocation: '广东省深圳市南山区南山街道永新工业区永新汇',
-                        diaryWeather: 'SUNNY_NIGHT',
-                        diaryMood: 'HAPPY',
-                        diaryEvent: 'MUSIC'
-                    },
-                    {
-                        diaryId: '3',
-                        diaryTitle: '日记标题日记标题日记标题日记标题日记标题日记标题日记标题日记标题',
-                        diaryContent: '日记主要内容日记主要内容日记主要内容日记主要内容日记主要内容',
-                        detailPhoto: 'http://10.239.74.180:81/File/20200817/2/2/1/7/7ff9ff8cfa9740.png',
-                        diaryCreateTime: '20200301',
-                        diaryLocation: '广东省深圳市南山区南山街道永新工业区永新汇',
-                        diaryWeather: 'SUNNY_NIGHT',
-                        diaryMood: 'HAPPY',
-                        diaryEvent: 'MUSIC'
-                    }
-                ]
+                blogList: []
             }
         },
         methods: {
@@ -137,6 +104,12 @@
                 return formateDate(value)
             },
             /**
+             * 新增博客
+             */
+            addBlog() {
+                console.log('新增博客')
+            },
+            /**
              * 监控滚动位置
              * @param position
              */
@@ -152,7 +125,7 @@
             /**
              * 获取日记信息
              */
-            getDiaryList() {
+            getBlogList() {
                 console.log('获取日记信息')
                 this.$refs.scrollRef.finishPullUp()
             },

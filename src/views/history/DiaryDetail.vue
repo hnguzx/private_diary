@@ -4,7 +4,7 @@
             <el-page-header @back="pre" title=""></el-page-header>
         </el-header>
         <el-main class="el_main">
-            <el-image :src="detailPhoto" fit="contain" lazy>
+            <el-image :src="diaryPhoto" fit="contain" lazy>
                 <div slot="error" class="image-slot">
                     <el-image :src="errorImg"></el-image>
                 </div>

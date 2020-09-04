@@ -1,4 +1,4 @@
-import {ajaxRequest} from "network/request";
+import {ajaxRequest} from "network/request"
 
 export function getDiaryDetail(params) {
     return ajaxRequest({

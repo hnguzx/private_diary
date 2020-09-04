@@ -5,8 +5,8 @@
         </el-header>
         <el-main class="el_main">
             <el-upload
-                    ref="detailPhoto"
-                    name="detailPhoto"
+                    ref="diaryPhoto"
+                    name="diaryPhoto"
                     class="avatar-uploader"
                     :action="uploadUrl"
                     :show-file-list="false"
@@ -94,17 +94,17 @@
                     diaryMood: this.$root.$data.sharedState.diaryContent.mood,
                     diaryEvent: this.$root.$data.sharedState.diaryContent.event,
                     diaryLocation: this.diaryLocation,
-                    detailContent: this.diaryContent,
+                    diaryContent: this.diaryContent,
                     diaryLongitude: this.diaryLongitude,
                     diaryLatitude: this.diaryLatitude
                 }
-                let detailPhoto = ''
-                if (this.$refs.detailPhoto.uploadFiles.length > 0) {
-                    detailPhoto = this.$refs.detailPhoto.uploadFiles[0].raw;
+                let diaryPhoto = ''
+                if (this.$refs.diaryPhoto.uploadFiles.length > 0) {
+                    diaryPhoto = this.$refs.diaryPhoto.uploadFiles[0].raw;
                 }
                 diaryData = JSON.stringify(diaryData)
                 let formData = new FormData()
-                formData.append("detailPhoto", detailPhoto)
+                formData.append("diaryPhoto", diaryPhoto)
                 formData.append("diary", new Blob([diaryData], {type: "application/json"}))
 
                 saveDiary(formData).then(data => {

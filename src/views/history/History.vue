@@ -26,13 +26,14 @@
                     <el-col @click.native="intoDetail(item)">
                         <el-card shadow="always" class="diary_item">
                             <p class="line_limit_length">{{item.diaryTitle}}</p>
-                            <el-image v-if="item.detailPhoto" :src="item.detailPhoto" fit="contain">
+                            <el-image v-if="item.diaryPhoto" :src="item.diaryPhoto" fit="contain">
                                 <div slot="error" class="image-slot">
                                     <el-image :src="errorImg"></el-image>
                                 </div>
                             </el-image>
                             <div>
-                                <p class="line_limit_length">{{item.detailContent}}</p>
+                                <p class="line_limit_length"
+                                      style="color: rgb(144,144,144)">{{item.diaryContent}}</p>
                             </div>
 
 
@@ -87,7 +88,7 @@
                 errorImg: require('assets/img/other/imgLoadFail.svg'),
                 diarySearch: '',
                 start: 0,
-                size: 5,
+                size: 10,
                 diaryList: []
             }
         },
@@ -134,7 +135,6 @@
                 }
                 getDiaryList(params).then(data => {
                     if (data.code == '200') {
-                        // this.diaryList.push(data.data)
                         this.diaryList = data.data
                         this.start++
                     }
