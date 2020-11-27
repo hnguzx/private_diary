@@ -1,12 +1,13 @@
 import Axios from 'axios'
 
+
 // config:配置参数，successCallback:成功的回调函数，failureCallback：失败的回调函数
 export function ajaxRequest(config) {
 
     // 公共参数
     const axiosExample = Axios.create({
         // baseURL: '', // 调用mock数据，实际应用时注释掉，打开下面的baseURL
-        baseURL: 'http://10.239.74.177',
+        baseURL: '/api',
         // baseURL: 'http://180.76.58.205',
         timeout: 5000,
         headers: {'content-type': 'application/json'},
@@ -27,8 +28,11 @@ export function ajaxRequest(config) {
         console.log(res.data)
         if (res.data.code == '200') {
             return res.data
+        }else {
+            return res.data.code
+            console.log('error:' + res.data.code + 'msg' + res.data.msg)
         }
-        this.$message('error:' + res.data.code + 'msg' + res.data.msg)
+
 
     }, error => {
         return error;

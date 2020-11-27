@@ -36,7 +36,7 @@ module.exports = {
                 'views': '@/views'
             }
         },
-        externals:{
+        externals: {
             'AMap': 'AMap' // 高德地图配置
         }
     },
@@ -44,6 +44,16 @@ module.exports = {
         // open: true, //是否自动弹出浏览器页面
         // host: "http://10.239.74.177",
         // port: '80',
+        // 开启跨域
+        proxy: {
+            '/api': {
+                target: 'http://localhost/',     // 真实地址
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/api': ''     // 重写路径
+                }
+            }
+        },
         https: false,   //是否使用https协议
         hotOnly: true, //是否开启热更新
     }

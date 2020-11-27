@@ -11,14 +11,14 @@
         <el-main>
             <el-form label-position="labelPosition" label-width="80px">
                 <ValidationObserver ref="form">
-                    <ValidationProvider name="邮箱/手机" rules="required|emailOrPhone" v-slot="{errors}">
+                    <ValidationProvider name="邮箱/手机" rules="required" v-slot="{errors}">
                         <el-form-item label="邮箱/手机">
                             <el-input placeholder="邮箱或手机号" v-model="emailOrPhone" clearable></el-input>
                         </el-form-item>
                         <span class="error-msg ">{{errors[0]}}</span>
                     </ValidationProvider>
 
-                    <ValidationProvider name="密码" rules="required|alpha_dash|min:8" ref="password"
+                    <ValidationProvider name="密码" rules="required|alpha_dash" ref="password"
                                         v-slot="{errors}">
                         <el-form-item label="密码">
                             <el-input placeholder="请输入密码" v-model="password" show-password clearable></el-input>
@@ -48,8 +48,9 @@
         name: "Login",
         data() {
             return {
-                emailOrPhone: 'hnguzx@qq.com',
+                username: 'hnguzx@qq.com',
                 password: 'test1234',
+                emailOrPhone:'',
                 email: '',
                 phone: ''
             }
@@ -70,11 +71,13 @@
                         return
                     }
                     this.isEmailOrPhone()
-                    this.password = md5(this.password)
+                    // this.password = md5(this.password)
                     let params = {
-                        userEmail: this.email,
-                        userPhone: this.phone,
-                        userPassword: this.password
+                        // userEmail: this.email,
+                        // userPhone: this.phone,
+                        // userPassword: this.password
+                        username:this.emailOrPhone,
+                        password: this.password
                     }
                     login(params).then(data => {
                         if (data.code == '200'){
