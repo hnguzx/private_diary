@@ -1,5 +1,5 @@
 import {ajaxRequest} from "network/request";
-import qs from 'qs';
+import qs from "qs";
 
 
 export function getVerifyCode(params) {
@@ -26,11 +26,10 @@ export function updatePassword(params) {
 }
 
 export function login(params) {
-    // let param = new URLSearchParams();
-    // param.append("username",params.username)
-    // param.append("password",params.password)
     return ajaxRequest({
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        headers:{
+            'Content-type': 'application/x-www-form-urlencoded'
+        },
         url: '/login',
         method: 'post',
         data: qs.stringify(params)

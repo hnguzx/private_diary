@@ -47,7 +47,8 @@ module.exports = {
         // 开启跨域
         proxy: {
             '/api': {
-                target: 'http://localhost/',     // 真实地址
+                // target: 'http://localhost/',     // 真实地址
+                target: 'http://180.76.58.205/',     // 真实地址
                 changeOrigin: true,
                 pathRewrite: {
                     '^/api': ''     // 重写路径

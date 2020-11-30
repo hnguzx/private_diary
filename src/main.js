@@ -16,6 +16,7 @@ import VueTouch from 'vue-touch'
 import vueStore from "./store"
 import store from "./vuex"
 import echarts from 'echarts'
+import qs from 'qs'
 
 import App from './App.vue'
 
@@ -23,6 +24,7 @@ Vue.config.productionTip = false
 Vue.use(ElementUI, {zhLocale})
 Vue.use(VueTouch)
 Vue.prototype.$echarts = echarts
+Vue.prototype.$qs = qs
 
 
 new Vue({
