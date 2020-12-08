@@ -35,3 +35,13 @@ export function login(params) {
         data: qs.stringify(params)
     })
 }
+
+export function logout(params) {
+    return ajaxRequest({
+        headers:{
+            'Content-type': 'application/x-www-form-urlencoded'
+        },
+        url: '/logout',
+        method: 'post'
+    })
+}
