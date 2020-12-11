@@ -36,7 +36,7 @@ export function login(params) {
     })
 }
 
-export function logout(params) {
+export function logout() {
     return ajaxRequest({
         headers:{
             'Content-type': 'application/x-www-form-urlencoded'

@@ -48,9 +48,9 @@
         name: "Login",
         data() {
             return {
-                username: 'hnguzx@qq.com',
-                password: 'test1234',
-                emailOrPhone:'',
+                username: '',
+                password: '111111111',
+                emailOrPhone:'guzx',
                 email: '',
                 phone: ''
             }
@@ -71,7 +71,7 @@
                         return
                     }
                     this.isEmailOrPhone()
-                    // this.password = md5(this.password)
+                    this.password = md5(this.password)
                     let params = {
                         // userEmail: this.email,
                         // userPhone: this.phone,

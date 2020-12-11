@@ -14,15 +14,22 @@
                 <img slot="tabbar-icon-active" src="~assets/img/tabbar/square_act.svg">
                 <div slot="tabbar-text">{{tabTest[1]}}</div>
             </tab-bar-item>
+
+            <tab-bar-item path="/main/chat">
+                <img slot="tabbar-icon" src="~assets/img/tabbar/square.svg">
+                <img slot="tabbar-icon-active" src="~assets/img/tabbar/square_act.svg">
+                <div slot="tabbar-text">{{tabTest[2]}}</div>
+            </tab-bar-item>
+
             <tab-bar-item path="/main/history">
                 <img slot="tabbar-icon" src="~assets/img/tabbar/history.svg">
                 <img slot="tabbar-icon-active" src="~assets/img/tabbar/history_act.svg">
-                <div slot="tabbar-text">{{tabTest[2]}}</div>
+                <div slot="tabbar-text">{{tabTest[3]}}</div>
             </tab-bar-item>
             <tab-bar-item path="/main/mine">
                 <img slot="tabbar-icon" src="~assets/img/tabbar/mine.svg">
                 <img slot="tabbar-icon-active" src="~assets/img/tabbar/mine_act.svg">
-                <div slot="tabbar-text">{{tabTest[3]}}</div>
+                <div slot="tabbar-text">{{tabTest[4]}}</div>
             </tab-bar-item>
         </tab-bar>
     </div>
@@ -39,7 +46,7 @@
         },
         data() {
             return {
-                tabTest: ['首页', '广场', '历史', '我的']
+                tabTest: ['首页', '广场','聊天', '历史', '我的']
             }
         },
     }

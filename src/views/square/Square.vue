@@ -6,7 +6,7 @@
             </div>
             <div slot="nav-center">广场</div>
             <div slot="nav-right">
-                <i class="el-icon-setting"></i>
+                <i class="el-icon-setting" @click="getVerifyCode"></i>
             </div>
         </nav-bar>
         <el-main class="el_main">
@@ -57,7 +57,8 @@
                 </el-row>
             </scroll>
             <back-top @click.native="backClick" v-show="isShow"/>
-            <el-image @click="addBlog" class="add_img" :src="addImg"></el-image>
+<!--            <el-image @click="addBlog" class="add_img" :src="addImg"></el-image>-->
+            <el-image @click="getVerifyCode" class="add_img" :src="addImg"></el-image>
         </el-main>
     </el-container>
 </template>
@@ -68,6 +69,7 @@
     import BackTop from "components/common/backTop/BackTop"
 
     import {getValue, formateDate} from "commonjs/tool"
+    import {getVerifyCode} from "js/user/user"
 
     export default {
         name: "Square",
@@ -86,6 +88,23 @@
             }
         },
         methods: {
+
+            getVerifyCode() {
+                debugger
+                    let params = {
+                        emailOrPhone: 'hnguzx@qq.com',
+                    };
+                    getVerifyCode(params).then(data => {
+                        this.$message({
+                            showClose: false,
+                            message: '验证码发送成功!',
+                            type: "success"
+                        });
+                        this.forbiddenButtonTime = 60
+                        this.buttonText = this.forbiddenButtonTime + '秒后重新获取'
+                        this.timer = setInterval(this.preventReSub, 1000)
+                    })
+            },
             /**
              * 获取数据字典信息
              * @param key

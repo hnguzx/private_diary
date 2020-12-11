@@ -3,21 +3,10 @@ import Vuex from 'vuex'
 
 import mutations from "./mutations"
 import actions from "./actions"
-import getters from "./getters";
+import getters from "./getters"
+import state from "./states"
 
 Vue.use(Vuex)
-
-const state = {
-    userInfo: {
-        userId: '',
-        userName: '',
-        userBirthday: '',
-        userSex: '',
-        userPhone: '',
-        userEmail: '',
-        userHead: ''
-    }
-};
 
 const store = new Vuex.Store({
     state,

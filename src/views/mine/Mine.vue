@@ -10,7 +10,6 @@
             </div>
         </nav-bar>
 
-
         <scroll class="content"
                 ref="scrollRef"
                 :pull-down-refresh="true"
@@ -93,7 +92,17 @@
             </el-main>
         </scroll>
 
-
+        <el-drawer
+                :visible.sync="set"
+                direction="rtl"
+                size="100%"
+                :show-close="true"
+                :with-header="false"
+                ref="drawer">
+            <div>
+                <router-view></router-view>
+            </div>
+        </el-drawer>
     </el-container>
 </template>
 
@@ -131,7 +140,8 @@
                 diaryAddressList: [],
                 longitudeList: [],
                 latitudeList: [],
-                tempList: []
+                tempList: [],
+                set:false
             }
         },
         methods: {
@@ -360,7 +370,8 @@
              * 进入设置页面
              */
             setting() {
-                console.log('进入设置页面')
+                this.set = true;
+                console.log('进入设置页面');
             }
         },
         created() {

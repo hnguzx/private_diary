@@ -135,7 +135,9 @@
                 }
                 getDiaryList(params).then(data => {
                     if (data.code == '200') {
-                        this.diaryList = data.data
+                        this.diaryList = data.data.result.filter(function (item) {
+                            return item;
+                        });
                         this.start++
                     }
                 })

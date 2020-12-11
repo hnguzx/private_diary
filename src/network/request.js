@@ -1,5 +1,6 @@
 import Axios from 'axios'
 
+// Axios.defaults.withCredentials = true
 
 // config:配置参数，successCallback:成功的回调函数，failureCallback：失败的回调函数
 export function ajaxRequest(config) {
@@ -10,7 +11,9 @@ export function ajaxRequest(config) {
         baseURL: '/api',
         // baseURL: 'http://180.76.58.205',
         timeout: 5000,
-        headers: {'content-type': 'application/json'},
+        headers: {
+            'content-type': 'application/json'
+        },
         responseType: 'json'
     });
     // request拦截
@@ -18,6 +21,9 @@ export function ajaxRequest(config) {
         if (config.method.toLowerCase() != 'get') {
             console.log(config.data)
         }
+        // xhrFields:{
+        //     withCredentials: true,
+        // }
         return config
     }, error => {
         console.log(error)
@@ -28,7 +34,7 @@ export function ajaxRequest(config) {
         console.log(res.data)
         if (res.data.code == '200') {
             return res.data
-        }else {
+        } else {
             return res.data.code
             console.log('error:' + res.data.code + 'msg' + res.data.msg)
         }
