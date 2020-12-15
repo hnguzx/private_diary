@@ -8,7 +8,10 @@ const state = sessionStorage.getItem('state')?JSON.parse(sessionStorage.getItem(
         userEmail: '',
         userHead: ''
     },
-    friends:[]
+    friends:[],
+    webSocketIP:'localhost',
+    token:{},
+    stompClient:{}
 };
 
 export default state

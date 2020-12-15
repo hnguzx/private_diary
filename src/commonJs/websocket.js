@@ -1,96 +1,31 @@
-let Socket = ''
-let setIntervalWebsocketPush = null
+// socket功能
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
+import store from "../vuex";
 
-/**
- * 建立websocket连接
- * @param {string} url ws地址
- */
-export const createSocket = url => {
-    Socket && Socket.close()
-    if (!Socket) {
-        console.log('建立websocket连接')
-        Socket = new WebSocket(url)
-        Socket.onopen = onopenWS
-        Socket.onmessage = onmessageWS
-        Socket.onerror = onerrorWS
-        Socket.onclose = oncloseWS
-    } else {
-        console.log('websocket已连接')
-    }
-}
+export function connectionSocket(connectionEndPoint, sendServeEndPoint) {
+    let socket = new SockJS('http://' + store.getters.webSocketIP + connectionEndPoint);//连接SockJS的endpoint名称为"bullet"
+    console.log('socket连接地址：' + 'http://' + store.getters.webSocketIP + connectionEndPoint);
+    // 获取STOMP子协议的客户端对象
+    let stompClient = Stomp.over(socket);
+    // 定义客户端的认证信息,按需求配置
+    let headers = {
+        Authorization: store.getters.token
+    };
 
-/**打开WS之后发送心跳 */
-const onopenWS = () => {
-    sendPing()
+    // 拦截输出的一大堆垃圾信息
+    stompClient.debug = function (str) {
+        $("#debug").append(str + "\n");
+    };
+    // 向服务器发起websocket连接
+    stompClient.connect(headers, () => {
+        stompClient.subscribe(sendServeEndPoint, (response) => { // 订阅服务端提供的某个topic
+                if (response.body) {
+                    const repObj = JSON.parse(response.body);
+                }
+            });
+    }, (err) => {
+        // 连接发生错误时的处理函数
+        console.log('失败')
+    });
 }
-
-/**连接失败重连 */
-const onerrorWS = () => {
-    Socket.close()
-    clearInterval(setIntervalWebsocketPush)
-    console.log('连接失败重连中')
-    if (Socket.readyState !== 3) {
-        Socket = null
-        createSocket()
-    }
-}
-
-/**WS数据接收统一处理 */
-const onmessageWS = e => {
-    window.dispatchEvent(new CustomEvent('onmessageWS', {
-        detail: {
-            data: e.data
-        }
-    }))
-}
-
-/**
- * 发送数据但连接未建立时进行处理等待重发
- * @param {any} message 需要发送的数据
- */
-const connecting = message => {
-    setTimeout(() => {
-        if (Socket.readyState === 0) {
-            connecting(message)
-        } else {
-            Socket.send(JSON.stringify(message))
-        }
-    }, 1000)
-}
-
-/**
- * 发送数据
- * @param {any} message 需要发送的数据
- */
-export const sendWSPush = message => {
-    if (Socket !== null && Socket.readyState === 3) {
-        Socket.close()
-        createSocket()
-    } else if (Socket.readyState === 1) {
-        Socket.send(JSON.stringify(message))
-    } else if (Socket.readyState === 0) {
-        connecting(message)
-    }
-}
-
-/**断开重连 */
-const oncloseWS = () => {
-    clearInterval(setIntervalWebsocketPush)
-    console.log('websocket已断开....正在尝试重连')
-    if (Socket.readyState !== 2) {
-        Socket = null
-        createSocket()
-    }
-}
-/**发送心跳
- * @param {number} time 心跳间隔毫秒 默认5000
- * @param {string} ping 心跳名称 默认字符串ping
- */
-export const sendPing = (time = 5000, ping = 'ping') => {
-    clearInterval(setIntervalWebsocketPush)
-    Socket.send(ping)
-    setIntervalWebsocketPush = setInterval(() => {
-        Socket.send(ping)
-    }, time)
-}
-
