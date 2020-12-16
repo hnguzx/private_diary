@@ -9,25 +9,28 @@
                 <i class="el-icon-setting"></i>
             </div>
         </nav-bar>
-        <el-row>
-            <el-input placeholder="请输入聊天内容" v-model="msg" clearable></el-input>
-        </el-row>
-        <el-row>
-            <el-input placeholder="请输入要发送的用户" type="number" v-model="receiver" clearable></el-input>
-        </el-row>
-        <el-row>
-            <el-card>
+        <el-main>
+            <el-row>
+                <el-input placeholder="请输入聊天内容" v-model="msg" clearable></el-input>
+            </el-row>
+            <el-row>
+                <el-input placeholder="请输入要发送的用户" type="number" v-model="receiver" clearable></el-input>
+            </el-row>
+            <el-row>
                 <div v-for="item in messageList">
-                    <h2>{{item}}</h2>
+                    <h2>{{item.msgContent}}</h2>
                 </div>
-            </el-card>
-        </el-row>
+            </el-row>
 
-        <el-row style="position: absolute;bottom: 50px">
-            <el-button type="primary" @click="openConnect">Connected</el-button>
-            <el-button type="primary" @click="disConnect">DisConnected</el-button>
-            <el-button type="info" @click="sendMsg">send</el-button>
-        </el-row>
+
+        </el-main>
+        <el-footer>
+            <el-row style="position: absolute;bottom: 50px">
+                <el-button type="primary" @click="openConnect">Connected</el-button>
+                <el-button type="primary" @click="disConnect">DisConnected</el-button>
+                <el-button type="info" @click="sendMsg">send</el-button>
+            </el-row>
+        </el-footer>
 
     </el-container>
 </template>
@@ -67,7 +70,7 @@
                 }).catch(() => {
                     this.$message({
                         type: 'info',
-                        message: '取消输入'
+                        // message: '取消输入'
                     })
                 });
             },
@@ -89,8 +92,8 @@
                     })
 
                     that.stompClient.subscribe('/user/queue/customer', data => {
-                        console.log("接收到的消息："+data.body)
-                        that.handleMsg(data.body)
+                        console.log("接收到的消息：" + data.body)
+                        that.handleMsg(JSON.parse(data.body))
                     }, err => {
                         console.log('Connected Fail：' + err)
                     })
@@ -120,7 +123,7 @@
                 let that = this;
                 this.receiver = parseInt(this.receiver);
                 let message = {
-                    msgSender:this.$store.getters.userInfo.userId,
+                    msgSender: this.$store.getters.userInfo.userId,
                     msgReceiver: this.receiver,
                     msgContent: this.msg
                 };
@@ -130,10 +133,10 @@
             /**
              * 接收消息
              */
-            receivedMsg(){
+            receivedMsg() {
                 let that = this;
                 that.stompClient.subscribe('/user/queue/customer', data => {
-                    console.log("接收到的消息："+data.body)
+                    console.log("接收到的消息：" + data.body)
                 }, err => {
                     console.log('Connected Fail：' + err)
                 })
@@ -142,7 +145,7 @@
             /**
              * 处理聊天记录
              */
-            handleMsg(message){
+            handleMsg(message) {
                 this.messageList.push(message)
             }
         },
