@@ -1,3 +1,7 @@
+/**
+ * 相当于定义的全局变量
+ * 最好全部初始化好
+ */
 const state = sessionStorage.getItem('state')?JSON.parse(sessionStorage.getItem('state')) : {
     userInfo: {
         userId: '',
@@ -9,8 +13,11 @@ const state = sessionStorage.getItem('state')?JSON.parse(sessionStorage.getItem(
         userHead: ''
     },
     friends:[],
-    webSocketIP:'localhost',
-    token:{},
+    // webSocketIP:'localhost',
+    webSocketIP:'180.76.58.205',
+    token:{
+        name:'bbb'
+    },
     stompClient:{}
 };
 

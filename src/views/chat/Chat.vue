@@ -22,13 +22,19 @@
                 </div>
             </el-row>
 
-
+            <el-row>
+                <h2>{{add}}</h2>
+                <h2>{{webSocketIP}}</h2>
+                <h2>{{token}}</h2>
+                <h2>{{subtraction}}</h2>
+            </el-row>
         </el-main>
         <el-footer>
             <el-row style="position: absolute;bottom: 50px">
                 <el-button type="primary" @click="openConnect">Connected</el-button>
                 <el-button type="primary" @click="disConnect">DisConnected</el-button>
                 <el-button type="info" @click="sendMsg">send</el-button>
+                <el-button type="info" @click="addFriend">send</el-button>
             </el-row>
         </el-footer>
 
@@ -39,6 +45,7 @@
     import SockJS from 'sockjs-client';
     import Stomp from 'stompjs';
     import NavBar from "components/common/navbar/NavBar";
+    import {mapState, mapGetters,mapMutations,mapActions} from 'vuex'
 
     export default {
         name: "Chat",
@@ -49,6 +56,7 @@
             return {
                 messageList: [],
                 stompClient: {},
+                data:{},
                 msg: '',
                 receiver: 0
             }
@@ -75,7 +83,25 @@
                 });
             },
             addFriend(userEmail) {
-
+                /*this.$store.commit({
+                    type: 'token',
+                    data: {
+                        name:'aaa'
+                    }
+                })*/
+                /*this.$store.dispatch('syncAction')
+                this.$store.dispatch({
+                    type:'syncAction',
+                    data:{
+                        name:'ccc'
+                    }
+                })*/
+                /*this.syncAction({
+                    data:{
+                        name:'ggg'
+                    }
+                })*/
+                this.asyncAction()
             },
             /**
              * 开启socket连接
@@ -147,11 +173,46 @@
              */
             handleMsg(message) {
                 this.messageList.push(message)
-            }
+            },
+
+            /**
+             * mutations中的方法
+             */
+            ...mapMutations([
+                'updateUserInfo',
+                'asyncAction'
+            ]),
+            ...mapActions([
+                'syncAction'
+            ])
         },
         mounted() {
             // this.openConnect();
             // this.receivedMsg();
+            let {x, y, ...z} = {x: 1, y: 2, a: 4, b: 4};
+            console.log(z);
+            // getters中可以传参
+
+            console.log(this.$store.getters.token)
+
+        },
+        computed: {
+            ...mapState({}),
+            ...mapGetters([
+                'webSocketIP',
+                'token'
+            ]),
+            add() {
+                return 2 + 2;
+            },
+            subtraction:{
+                get(){
+                    return '使用了set和get方法的计算属性';
+                },
+                set(value){
+
+                }
+            }
         }
     }
 </script>

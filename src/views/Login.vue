@@ -50,7 +50,7 @@
             return {
                 username: '',
                 password: '111111111',
-                emailOrPhone:'guzx',
+                emailOrPhone: 'guzx',
                 email: '',
                 phone: ''
             }
@@ -76,11 +76,11 @@
                         // userEmail: this.email,
                         // userPhone: this.phone,
                         // userPassword: this.password
-                        username:this.emailOrPhone,
+                        username: this.emailOrPhone,
                         password: this.password
                     }
                     login(params).then(data => {
-                        if (data.code == '200'){
+                        if (data.code == '200') {
                             this.$store.commit({
                                 type: 'updateUserInfo',
                                 data: data.data
