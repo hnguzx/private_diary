@@ -22,12 +22,12 @@
                 </div>
             </el-row>
 
-            <el-row>
+            <!--<el-row>
                 <h2>{{add}}</h2>
                 <h2>{{webSocketIP}}</h2>
                 <h2>{{token}}</h2>
                 <h2>{{subtraction}}</h2>
-            </el-row>
+            </el-row>-->
         </el-main>
         <el-footer>
             <el-row style="position: absolute;bottom: 50px">
@@ -113,8 +113,10 @@
                 that.stompClient.connect({}, function (frame) {
                     that.stompClient.subscribe('/webSocketRequest/connect', data => {
                         console.log('Connected Success')
+                        alert('Connected Success')
                     }, err => {
                         console.log('Connected Fail：' + err)
+                        alert('Connected Fail')
                     })
 
                     that.stompClient.subscribe('/user/queue/customer', data => {
