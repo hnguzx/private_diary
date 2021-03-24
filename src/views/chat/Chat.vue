@@ -42,8 +42,8 @@
 </template>
 
 <script>
-    import SockJS from 'sockjs-client';
-    import Stomp from 'stompjs';
+
+
     import NavBar from "components/common/navbar/NavBar";
     import {mapState, mapGetters,mapMutations,mapActions} from 'vuex'
 
@@ -55,7 +55,7 @@
         data() {
             return {
                 messageList: [],
-                stompClient: {},
+                // stompClient: {},
                 data:{},
                 msg: '',
                 receiver: 0
@@ -103,79 +103,7 @@
                 })*/
                 this.asyncAction()
             },
-            /**
-             * 开启socket连接
-             */
-            openConnect() {
-                let that = this;
-                let socket = new SockJS('http://' + this.$store.getters.webSocketIP + '/webSocketServer');
-                that.stompClient = Stomp.over(socket);
-                that.stompClient.connect({}, function (frame) {
-                    that.stompClient.subscribe('/webSocketRequest/connect', data => {
-                        console.log('Connected Success')
-                        alert('Connected Success')
-                    }, err => {
-                        console.log('Connected Fail：' + err)
-                        alert('Connected Fail')
-                    })
 
-                    that.stompClient.subscribe('/user/queue/customer', data => {
-                        console.log("接收到的消息：" + data.body)
-                        that.handleMsg(JSON.parse(data.body))
-                    }, err => {
-                        console.log('Connected Fail：' + err)
-                    })
-                })
-            },
-
-            /**
-             * 断开连接
-             */
-            disConnect() {
-                let that = this;
-                if (that.stompClient != null) {
-                    that.stompClient.subscribe('/webSocketRequest/disConnect', data => {
-                        console.log("DisConnected Success");
-                        that.stompClient.disconnect(() => {
-                        });
-                    }, err => {
-                        console.log('DisConnected Fail：' + err)
-                    })
-                }
-            },
-
-            /**
-             * 发送消息
-             */
-            sendMsg() {
-                let that = this;
-                this.receiver = parseInt(this.receiver);
-                let message = {
-                    msgSender: this.$store.getters.userInfo.userId,
-                    msgReceiver: this.receiver,
-                    msgContent: this.msg
-                };
-                that.stompClient.send("/webSocketRequest/sendUser", {}, JSON.stringify(message))
-            },
-
-            /**
-             * 接收消息
-             */
-            receivedMsg() {
-                let that = this;
-                that.stompClient.subscribe('/user/queue/customer', data => {
-                    console.log("接收到的消息：" + data.body)
-                }, err => {
-                    console.log('Connected Fail：' + err)
-                })
-            },
-
-            /**
-             * 处理聊天记录
-             */
-            handleMsg(message) {
-                this.messageList.push(message)
-            },
 
             /**
              * mutations中的方法

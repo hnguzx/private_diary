@@ -14,19 +14,28 @@
 
 <script>
     import {logout} from "js/user/user"
+    import {disConnect} from "js/login/login";
 
     export default {
         name: "Set",
+        data(){
+            return{
+            }
+        },
         methods:{
             pre() {
                 this.$parent.closeDrawer()
             },
             logout(){
-                logout().then(() =>{
+                let params = {
+                    username:this.$store.getters.userInfo.userName
+                }
+                logout(params).then(() =>{
                     this.$store.commit({
                         type: 'updateUserInfo',
                         data: {}
                     })
+                    disConnect()
                     this.$router.push('/')
                     return
                 });

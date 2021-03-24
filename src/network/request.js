@@ -1,5 +1,7 @@
 import Axios from 'axios'
 
+Axios.defaults.withCredentials=true;
+
 // config:配置参数，successCallback:成功的回调函数，failureCallback：失败的回调函数
 export function ajaxRequest(config) {
 
@@ -7,7 +9,7 @@ export function ajaxRequest(config) {
     const axiosExample = Axios.create({
         // baseURL: '', // 调用mock数据，实际应用时注释掉，打开下面的baseURL
         // baseURL: '/api',
-        baseURL: 'http://180.76.58.205',
+        baseURL: 'http://10.239.46.243/',
         // baseURL: 'http://127.0.0.1',
         timeout: 5000,
         withCredentials: true,

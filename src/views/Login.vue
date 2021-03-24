@@ -41,6 +41,7 @@
 <script>
     import 'validator/validator'
     import {login} from "js/user/user"
+    import {openConnect} from "js/login/login";
     import {isEmail} from "commonjs/tool"
     import md5 from 'js-md5'
 
@@ -49,7 +50,7 @@
         data() {
             return {
                 username: '',
-                password: '111111111',
+                password: '11111111',
                 emailOrPhone: 'guzx',
                 email: '',
                 phone: ''
@@ -71,13 +72,9 @@
                         return
                     }
                     this.isEmailOrPhone()
-                    this.password = md5(this.password)
                     let params = {
-                        // userEmail: this.email,
-                        // userPhone: this.phone,
-                        // userPassword: this.password
                         username: this.emailOrPhone,
-                        password: this.password
+                        password: md5(this.password)
                     }
                     login(params).then(data => {
                         if (data.code == '200') {
@@ -86,6 +83,8 @@
                                 data: data.data
                             })
                             this.$router.push('/main')
+                            let result = openConnect(this.username,this.password);
+                            console.log(result);
                             return
                         }
                         this.$message('登录失败')

@@ -13,8 +13,6 @@ const state = sessionStorage.getItem('state')?JSON.parse(sessionStorage.getItem(
         userHead: ''
     },
     friends:[],
-    // webSocketIP:'127.0.0.1',
-    webSocketIP:'180.76.58.205',
     token:{
         name:'bbb'
     },

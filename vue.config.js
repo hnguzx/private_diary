@@ -40,23 +40,23 @@ module.exports = {
             'AMap': 'AMap' // 高德地图配置
         }
     },
-    devServer: {
+    /*devServer: {
         open: true, //是否自动弹出浏览器页面
         // host: "127.0.0.1",
         disableHostCheck: true,
         port: '81',
         // 开启跨域
-        // proxy: {
-        //     '/api': {
-        //         target: 'http://127.0.0.1/',     // 真实地址
-        //         // target: 'http://180.76.58.205',     // 真实地址
-        //         changeOrigin: true,
-        //         pathRewrite: {
-        //             '^/api': ''     // 重写路径
-        //         }
-        //     }
-        // },
+        proxy: {
+            '/api': {
+                target: 'http://127.0.0.1/',     // 真实地址
+                // target: 'http://180.76.58.205',     // 真实地址
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/api': ''     // 重写路径
+                }
+            }
+        },
         https: false,   //是否使用https协议
         hotOnly: true, //是否开启热更新
-    }
+    }*/
 };

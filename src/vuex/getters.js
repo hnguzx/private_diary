@@ -6,9 +6,6 @@ export default {
     userInfo: state => {
         return state.userInfo
     },
-    webSocketIP: state => {
-        return state.webSocketIP
-    },
     token: state => {
         return state.token
     },
