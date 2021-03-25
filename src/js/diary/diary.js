@@ -8,6 +8,8 @@ export function getDiaryDetail(params) {
     })
 }
 
+
+
 export function getDiaryList(params) {
     if (params.diarySearch == '' || params.diarySearch == undefined) {
         return ajaxRequest({
